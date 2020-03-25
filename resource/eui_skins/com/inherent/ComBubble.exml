@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.ComBubble" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:com="com.*"
+        xmlns:item="item.*">
+	<e:Group id="con" x="0" y="0" width="335" height="100">
+		<e:Group id="conWord" width="335" anchorOffsetX="148" anchorOffsetY="-20" height="100" x="148" y="-20" scaleX="1"
+		         scaleY="1">
+			<e:Image id="bgDebug" source="pHelpMe_png" height="120" anchorOffsetX="167.5" anchorOffsetY="50" horizontalCenter="0"
+			         width="335" y="50" rotation="180" scale9Grid="37,28,7,6" />
+			<e:Image id="bgWord" source="pHelpMe_png" height="120" anchorOffsetX="167.5" anchorOffsetY="50" horizontalCenter="0"
+			         scale9Grid="37,28,7,6" width="335" y="50" rotation="0" />
+			<e:Image id="word" source="lang_guide_png" horizontalCenter="0" verticalCenter="0" />
+		</e:Group>
+	</e:Group>
+</e:Skin>

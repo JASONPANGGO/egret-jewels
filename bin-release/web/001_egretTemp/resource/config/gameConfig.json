@@ -1,0 +1,23 @@
+{
+    "autoEndTime": 0,
+    "playAgain": 1,
+    "gameConfig": {
+        "heroAttack": 100,
+        "enemyBloodByLevel": [
+            1000,
+            2000,
+            4000,
+            7000,
+            9000,
+            21111
+        ],
+        "enemyMaxLevel": 0,
+        "switch": "off"
+    },
+    "gameConfigRemark": {
+        "heroAttack": "英雄攻击力 格式....",
+        "enemyBloodByLevel": "敌人血量随着等级的数值 格式....",
+        "enemyMaxLevel": "敌人最高等级 格式....",
+        "switch": "第二关开关"
+    }
+}

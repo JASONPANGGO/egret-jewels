@@ -1,0 +1,39 @@
+{
+  "global": {
+    "globalAutoLayerMarkEnable": true,
+    "globalBindingDataTestObj": [],
+    "globalAdsorbEnable": true,
+    "globalBackgroundColor": "",
+    "globalBackgroundImage": "",
+    "globalBackgroundAlpha": 100,
+    "globalBackgroundX": 0,
+    "globalBackgroundY": 0,
+    "globalBackgroundWidth": -1,
+    "globalBackgroundHeight": -1
+  },
+  "1699015f821": {
+    "bindingDataTestObj": [],
+    "guideLinesEnabled": false,
+    "backgroundType": "null",
+    "backgroundImage": "D:\\01_My\\03_Project\\59_shoppingMall\\效果图\\3_总图.jpg",
+    "backgroundAlpha": "60",
+    "backgroundX": 0,
+    "backgroundY": 0,
+    "backgroundWidth": -1,
+    "backgroundHeight": -1,
+    "useBgImage": true,
+    "useBgColor": true
+  },
+  "16f12950994": {
+    "backgroundType": "null",
+    "backgroundImage": "C:\\Users\\A\\Desktop\\TIM截图20191217143904.png",
+    "useBgImage": false,
+    "useBgColor": false,
+    "bindingDataTestObj": [],
+    "backgroundX": 0,
+    "backgroundY": 0,
+    "backgroundWidth": -1,
+    "backgroundHeight": -1,
+    "backgroundAlpha": 100
+  }
+}

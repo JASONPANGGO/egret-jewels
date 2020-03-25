@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.ComFloat" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:com="com.*">
+	<e:Group id="con" x="60.5" y="15" anchorOffsetX="60.5" anchorOffsetY="15">
+		<e:Group id="conFloat" x="60.5" y="15" anchorOffsetX="60.5" anchorOffsetY="15">
+			<e:Image id="float" anchorOffsetX="60.5" anchorOffsetY="15"
+			          source="pBGspray_png" x="60.5" y="15"/>
+		</e:Group>
+	</e:Group>
+</e:Skin>

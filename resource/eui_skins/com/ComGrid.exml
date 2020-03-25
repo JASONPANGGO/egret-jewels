@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.ComGrid" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="83" height="99">
+	<e:Group id="con" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" width="83" height="99">
+		<e:Image id="jewel" width="83" height="99" x="0" y="0" source="grid1_png"/>
+		<e:Image id="prop" verticalCenter="8.5" anchorOffsetX="24" anchorOffsetY="25" horizontalCenter="0" width="48" height="50" source=""/>
+	</e:Group>
+</e:Skin>

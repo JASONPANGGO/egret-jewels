@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.ComProgress" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group id="con" y="0" x="0">
+		<e:Group id="conBar">
+			<e:Image source="icon3_wait_png"/>
+			<e:Image id="bar" x="0" y="0" source="icon4_wait_png"/>
+		</e:Group>
+
+	</e:Group>
+</e:Skin>

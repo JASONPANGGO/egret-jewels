@@ -1,0 +1,56 @@
+{
+  "skins": {
+    "eui.Button": "resource/eui_skins/ButtonSkin.exml",
+    "eui.CheckBox": "resource/eui_skins/CheckBoxSkin.exml",
+    "eui.HScrollBar": "resource/eui_skins/HScrollBarSkin.exml",
+    "eui.HSlider": "resource/eui_skins/HSliderSkin.exml",
+    "eui.Panel": "resource/eui_skins/PanelSkin.exml",
+    "eui.TextInput": "resource/eui_skins/TextInputSkin.exml",
+    "eui.ProgressBar": "resource/eui_skins/ProgressBarSkin.exml",
+    "eui.RadioButton": "resource/eui_skins/RadioButtonSkin.exml",
+    "eui.Scroller": "resource/eui_skins/ScrollerSkin.exml",
+    "eui.ToggleSwitch": "resource/eui_skins/ToggleSwitchSkin.exml",
+    "eui.VScrollBar": "resource/eui_skins/VScrollBarSkin.exml",
+    "eui.VSlider": "resource/eui_skins/VSliderSkin.exml",
+    "eui.ItemRenderer": "resource/eui_skins/ItemRendererSkin.exml"
+  },
+  "autoGenerateExmlsList": true,
+  "exmls": [
+    {
+      "path": "resource/eui_skins/com/base/ComEmpty.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.ComEmpty\" width=\"200\" height=\"100\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\">\r\n\r\n</e:Skin>"
+    },
+    {
+      "path": "resource/eui_skins/com/inherent/ComBubble.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.ComBubble\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\" xmlns:com=\"com.*\"\r\n        xmlns:item=\"item.*\">\r\n\t<e:Group id=\"con\" x=\"0\" y=\"0\" width=\"335\" height=\"100\">\r\n\t\t<e:Group id=\"conWord\" width=\"335\" anchorOffsetX=\"148\" anchorOffsetY=\"-20\" height=\"100\" x=\"148\" y=\"-20\" scaleX=\"1\"\r\n\t\t         scaleY=\"1\">\r\n\t\t\t<e:Image id=\"bgDebug\" source=\"pHelpMe_png\" height=\"120\" anchorOffsetX=\"167.5\" anchorOffsetY=\"50\" horizontalCenter=\"0\"\r\n\t\t\t         width=\"335\" y=\"50\" rotation=\"180\" scale9Grid=\"37,28,7,6\" />\r\n\t\t\t<e:Image id=\"bgWord\" source=\"pHelpMe_png\" height=\"120\" anchorOffsetX=\"167.5\" anchorOffsetY=\"50\" horizontalCenter=\"0\"\r\n\t\t\t         scale9Grid=\"37,28,7,6\" width=\"335\" y=\"50\" rotation=\"0\" />\r\n\t\t\t<e:Image id=\"word\" source=\"lang_guide_png\" horizontalCenter=\"0\" verticalCenter=\"0\" />\r\n\t\t</e:Group>\r\n\t</e:Group>\r\n</e:Skin>"
+    },
+    {
+      "path": "resource/eui_skins/com/inherent/ComFloat.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.ComFloat\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\" xmlns:com=\"com.*\">\r\n\t<e:Group id=\"con\" x=\"60.5\" y=\"15\" anchorOffsetX=\"60.5\" anchorOffsetY=\"15\">\r\n\t\t<e:Group id=\"conFloat\" x=\"60.5\" y=\"15\" anchorOffsetX=\"60.5\" anchorOffsetY=\"15\">\r\n\t\t\t<e:Image id=\"float\" anchorOffsetX=\"60.5\" anchorOffsetY=\"15\"\r\n\t\t\t          source=\"pBGspray_png\" x=\"60.5\" y=\"15\"/>\r\n\t\t</e:Group>\r\n\t</e:Group>\r\n</e:Skin>"
+    },
+    {
+      "path": "resource/eui_skins/com/inherent/ComGuide.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.ComGuide\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\" xmlns:com=\"com.*\">\r\n\t<e:Image id=\"hand\"  x=\"100\" y=\"50\" anchorOffsetX=\"100\" anchorOffsetY=\"50\" source=\"gf_hand_png\"/>\r\n</e:Skin>"
+    },
+    {
+      "path": "resource/eui_skins/com/inherent/ComLight.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.ComLight\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\" width=\"285\" height=\"285\">\r\n\t<e:Group id=\"con\" x=\"0\" y=\"0\" width=\"285\" height=\"285\">\r\n\t</e:Group>\r\n\t<e:Image id=\"warn\" anchorOffsetX=\"35\" anchorOffsetY=\"77\" x=\"160\" y=\"128\" source=\"p_zhiyin1_png\"/>\r\n</e:Skin>"
+    },
+    {
+      "path": "resource/eui_skins/com/inherent/ComProgress.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.ComProgress\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\">\r\n\t<e:Group id=\"con\" y=\"0\" x=\"0\">\r\n\t\t<e:Group id=\"conBar\">\r\n\t\t\t<e:Image source=\"icon3_wait_png\"/>\r\n\t\t\t<e:Image id=\"bar\" x=\"0\" y=\"0\" source=\"icon4_wait_png\"/>\r\n\t\t</e:Group>\r\n\r\n\t</e:Group>\r\n</e:Skin>"
+    },
+    {
+      "path": "resource/eui_skins/scene/GameScene.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.GameScene\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\" xmlns:ns1=\"*\"\r\n        xmlns:com=\"com.*\" width=\"750\" height=\"1334\">\r\n\t<w:Config id=\"1699015f821\" />\r\n\r\n\r\n\r\n\r\n\t<!--<e:Group id=\"conParticles\" horizontalCenter=\"0\" top=\"0\" touchChildren=\"false\" touchEnabled=\"false\">\r\n\t</e:Group>-->\r\n\r\n\t<!--<e:Group id=\"conFloat\" x=\"0\" width=\"100%\" height=\"82%\" bottom=\"0\">\r\n\t<e:Rect id=\"floatDebug\" width=\"100%\" height=\"100%\" fillColor=\"0x00ff00\" fillAlpha=\"0.3\" x=\"0\" y=\"0\" visible=\"false\" />\r\n</e:Group>\r\n-->\r\n</e:Skin>"
+    },
+    {
+      "path": "resource/eui_skins/ui/base/UiEmpty.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.UiEmpty\" width=\"750\" height=\"1334\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\">\r\n\r\n</e:Skin>"
+    },
+    {
+      "path": "resource/eui_skins/ui/inherent/UiFirst.exml",
+      "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<e:Skin class=\"skins.UiFirst\" width=\"750\" height=\"1334\" xmlns:e=\"http://ns.egret.com/eui\" xmlns:w=\"http://ns.egret.com/wing\">\r\n\t<!--<e:Rect id=\"bg\" width=\"750\" height=\"150\" x=\"0\" y=\"0\" fillColor=\"0x2f3651\" fillAlpha=\"0.5\" />-->\r\n\t<e:Group id=\"conLogo\" anchorOffsetX=\"0\" anchorOffsetY=\"0\" y=\"0\" x=\"0\">\r\n\t\t<e:Group id=\"gLogo\" x=\"0\" y=\"0\" scaleX=\"1.2\" scaleY=\"1.2\">\r\n\t\t\t<e:Image id=\"logo\" y=\"0\" x=\"0\"  source=\"lang_logo_png\"/>\r\n\t\t</e:Group>\r\n\t</e:Group>\r\n\t<e:Group id=\"conBtn\" anchorOffsetX=\"0\" anchorOffsetY=\"0\" y=\"300\" x=\"0\">\r\n\t\t<e:Group id=\"gBtn\" scaleX=\"0.8\" scaleY=\"0.8\">\r\n\t\t\t<e:Image id=\"btn\" x=\"0\" y=\"0\"  source=\"ctat_button_png\"/>\r\n\t\t\t<e:Image id=\"btnTxt\" horizontalCenter=\"0\" verticalCenter=\"0\"  source=\"lang_button_png\"/>\r\n\t\t</e:Group>\r\n\t</e:Group>\r\n</e:Skin>"
+    }
+  ]
+}

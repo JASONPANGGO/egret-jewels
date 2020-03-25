@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.UiFirst" width="750" height="1334" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<!--<e:Rect id="bg" width="750" height="150" x="0" y="0" fillColor="0x2f3651" fillAlpha="0.5" />-->
+	<e:Group id="conLogo" anchorOffsetX="0" anchorOffsetY="0" y="0" x="0">
+		<e:Group id="gLogo" x="0" y="0" scaleX="1.2" scaleY="1.2">
+			<e:Image id="logo" y="0" x="0"  source="lang_logo_png"/>
+		</e:Group>
+	</e:Group>
+	<e:Group id="conBtn" anchorOffsetX="0" anchorOffsetY="0" y="300" x="0">
+		<e:Group id="gBtn" scaleX="0.8" scaleY="0.8">
+			<e:Image id="btn" x="0" y="0"  source="ctat_button_png"/>
+			<e:Image id="btnTxt" horizontalCenter="0" verticalCenter="0"  source="lang_button_png"/>
+		</e:Group>
+	</e:Group>
+</e:Skin>

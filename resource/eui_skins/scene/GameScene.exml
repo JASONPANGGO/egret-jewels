@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.GameScene" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*"
+        xmlns:com="com.*" width="750" height="1334">
+	<w:Config id="1699015f821" />
+	<e:Image id="bg" source="p_bg_png" horizontalCenter="-2" verticalCenter="-2"/>
+	<e:Image id="ui_grass" source="p_leaves_png" y="1096.57" right="0" anchorOffsetX="375" anchorOffsetY="55.5"/>
+	<e:Group id="main_con" verticalCenter="0" horizontalCenter="0" height="609">
+		<e:Image id="main_frame" source="p_board_png" y="0" x="0"/>
+		<e:Group id="main_grid" y="6" width="581" height="597" horizontalCenter="0">
+			<com:ComGrid x="242" y="0" skinName="skins.ComGrid" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+			<com:ComGrid x="252" y="10" skinName="skins.ComGrid" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+			<com:ComGrid x="262" y="20" skinName="skins.ComGrid" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+			<com:ComGrid x="272" y="30" skinName="skins.ComGrid" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+			<com:ComGrid x="282" y="40" skinName="skins.ComGrid" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+			<com:ComGrid x="292" y="50" skinName="skins.ComGrid" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+			<com:ComGrid x="302" y="60" skinName="skins.ComGrid" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+			<e:layout>
+				<e:TileLayout horizontalGap="0"/>
+			</e:layout>
+		</e:Group>
+	</e:Group>
+	<e:Group id="ui_con" anchorOffsetY="87" height="174" left="0" bottom="0" anchorOffsetX="375">
+		<e:Image id="ui_frame" source="p_bottom_png" x="0" y="-64.95"/>
+		<e:Group id="ui_round" width="239" height="239" x="0" y="-64.95">
+			<e:Group id="ui_steps" x="71" y="139.07" width="100" height="100" anchorOffsetX="50" anchorOffsetY="50">
+				<e:Image id="ui_steps_title" source="p_bushu_title_png" y="0" x="27"/>
+				<e:BitmapLabel id="ui_steps_label" font="p_bushu_fnt" text="24" anchorOffsetX="48" anchorOffsetY="33" y="67" x="50"/>
+			</e:Group>
+			<e:Image id="ui_star1" source="p_star_s_png" x="187.5" y="118.57" anchorOffsetX="22.5" anchorOffsetY="20.5"/>
+			<e:Image id="ui_star2" source="p_star_s_png" x="135.23" y="56.61" rotation="341.83" anchorOffsetX="22.5" anchorOffsetY="20.5"/>
+			<e:Image id="ui_star3" source="p_star_s_png" x="73.17" y="43" rotation="329.17" anchorOffsetX="22.5" anchorOffsetY="20.5"/>
+		</e:Group>
+		<e:Group id="ui_text" x="228" y="11.55">
+			<e:Group id="ui_score" x="69.5" y="86" anchorOffsetX="69.5" anchorOffsetY="54.5">
+				<e:Image source="p_score_board_png" x="0" y="32"/>
+				<e:Image source="p_guanqia_1_png" x="35" y="0"/>
+				<e:BitmapLabel id="ui_score_label" font="p_score_fnt" text="0" scaleX="0.5" scaleY="0.5" horizontalCenter="-1.5" bottom="14"/>
+			</e:Group>
+			<e:Group id="ui_goals" x="163" y="0">
+				<e:Image source="p_goal_board_png" x="0" y="33.5"/>
+				<e:Image id="ui_goals_title" source="p_goal_png" x="173.5" y="46" anchorOffsetX="84.5" anchorOffsetY="46"/>
+			</e:Group>
+		</e:Group>
+	</e:Group>
+
+
+
+
+	<!--<e:Group id="conParticles" horizontalCenter="0" top="0" touchChildren="false" touchEnabled="false">
+	</e:Group>-->
+
+	<!--<e:Group id="conFloat" x="0" width="100%" height="82%" bottom="0">
+	<e:Rect id="floatDebug" width="100%" height="100%" fillColor="0x00ff00" fillAlpha="0.3" x="0" y="0" visible="false" />
+</e:Group>
+-->
+</e:Skin>
