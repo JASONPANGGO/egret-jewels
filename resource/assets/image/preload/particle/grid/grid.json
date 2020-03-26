@@ -27,7 +27,7 @@
 ,"emitterVariance":{"x":50,"y":10}
 ,"endBlue":255
 ,"emitAngle":94
-,"emitter":{"x":274,"y":111}
+,"emitter":{"x":0,"y":0}
 ,"emitAngleVariance":360
 ,"startBlue":255
 ,"startRotation":0

@@ -35,26 +35,34 @@ class GameMgr {
 		this.endType = null;
 		this.auto = false;
 	}
-
-	/** 读取游戏动态参数配置 */
+	/**
+ * 读取游戏动态参数配置
+ * 动态参数模板JSON配置说明：
+ * /// <reference path="http://confluence.mobvista.com/pages/viewpage.action?pageId=30346816" />
+ */
 	public static getConfig(key: string): any {
 		const res: any = RES.getRes("gameConfig_json");
 		if (res[key]) {
 			return res[key];
 		}
 
-		if (res["gameConfig"] && res["gameConfig"][key]) { //无难度模式区分
-			return res["gameConfig"][key];
+		const cfg = res["gameConfig"];
+
+		if (cfg && cfg[key] != void 0) { //无难度模式区分
+			if (typeof cfg[key] == "object" && cfg[key].value !== void 0) {
+				return cfg[key].value;
+			}
+			return cfg[key];
 		}
 
 		const gameDifficulty: string = res.gameDifficulty; //当前难度
-		const ob: any = res["gameConfig"][gameDifficulty];
-		if (ob && ob[key]) {
+		const ob: any = cfg[gameDifficulty];
+		if (ob && ob[key] != void 0) {
 			return ob[key];
 		}
 		return null;
 	}
-
+	
 	/** 获取视口宽度 */
 	public static get getWinW(): number {
 		let winW: number = window["adWidth"] || window.innerWidth;

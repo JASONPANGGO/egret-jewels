@@ -134,7 +134,23 @@ var gConst;
         ROCKET: 'p_g_rocket_png',
         STAR: 'p_g_star_png'
     };
-    gConst.game1 = [];
+    gConst.gridSize = {
+        WIDTH: 83,
+        HEIGHT: 99
+    };
+    gConst.game0 = [
+        [2, 2, 3, 1, 2],
+        [2, 6, 3, 1, 1, 2],
+        [4, 6, 5, 6, 3, 3],
+        [5, 4, 3, 5, 6],
+        [5, 2, 6, 3, 5]
+    ];
+    gConst.game1 = [
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3],
+    ];
     var _a, _b, _c, _d, _e, _f;
 })(gConst || (gConst = {}));
 //# sourceMappingURL=G_Const.js.map

@@ -25,6 +25,7 @@
     "resource/eui_skins/com/inherent/ComProgress.exml",
     "resource/eui_skins/scene/GameScene.exml",
     "resource/eui_skins/ui/base/UiEmpty.exml",
-    "resource/eui_skins/ui/inherent/UiFirst.exml"
+    "resource/eui_skins/ui/inherent/UiFirst.exml",
+    "resource/eui_skins/ui/inherent/UiStart.exml"
   ]
 }

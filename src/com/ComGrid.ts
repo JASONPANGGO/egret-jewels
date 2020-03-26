@@ -4,7 +4,7 @@ namespace com {
 	 */
     export class ComGrid extends com.ComFile {
 
-        private jewelName: string
+        public jewelIndex: number
         private propName: string
 
         public con: eui.Group;
@@ -21,13 +21,13 @@ namespace com {
 		 * 初始化
 		 * @param {any[]} args 构建传参会通过init()传过去
 		 */
-        protected init(jewelName: string) {
+        protected init(jewelIndex: number) {
             // console.info("init", ...args);
-            this.jewel.source = gConst.jewelTypes[jewelName]
+            this.jewelIndex = jewelIndex
+            this.jewel.source = 'grid' + jewelIndex + '_png'
             gComMgr.setObjSize(this.jewel, true)
             gComMgr.setObjSize(this.con, true)
-            this.anchorOffsetY = this.height;
-            this.anchorOffsetX = 0;
+            this.anchorOffsetX = this.anchorOffsetY = gConst.gridSize.WIDTH / 2;
         }
 
         /** 首次创建组件时调用 */
@@ -105,6 +105,16 @@ namespace com {
 
 
         /* =========== 业务代码-start =========== */
+
+        private partical: com.ComParticle
+        public hit(prop: string) {
+            if (prop) this.prop.source = gConst.propType[prop]
+            this.partical = new com.ComParticle()
+            this.partical.setData(this.parent, 'grid' + this.jewelIndex, 'grid')
+            this.partical.setPos(this.x, this.y)
+            this.partical.start(1000)
+            gTween.toSmallHide(this, 500, 1, 1, egret.Ease.quadOut)
+        }
 
         /* =========== 业务代码-end =========== */
     }

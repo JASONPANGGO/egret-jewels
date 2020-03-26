@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin class="skins.ComGuide" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:com="com.*">
-	<e:Image id="hand"  x="100" y="50" anchorOffsetX="100" anchorOffsetY="50" source="gf_hand_png"/>
+	<e:Image id="hand"  x="13.2" y="20.2" anchorOffsetX="13.2" anchorOffsetY="20.2" source="p_hand_png"/>
 </e:Skin>

@@ -14,18 +14,26 @@ var GameMgr = (function () {
         this.endType = null;
         this.auto = false;
     };
-    /** 读取游戏动态参数配置 */
+    /**
+     * 读取游戏动态参数配置
+     * 动态参数模板JSON配置说明：
+     * /// <reference path="http://confluence.mobvista.com/pages/viewpage.action?pageId=30346816" />
+     */
     GameMgr.getConfig = function (key) {
         var res = RES.getRes("gameConfig_json");
         if (res[key]) {
             return res[key];
         }
-        if (res["gameConfig"] && res["gameConfig"][key]) {
-            return res["gameConfig"][key];
+        var cfg = res["gameConfig"];
+        if (cfg && cfg[key] != void 0) {
+            if (typeof cfg[key] == "object" && cfg[key].value !== void 0) {
+                return cfg[key].value;
+            }
+            return cfg[key];
         }
         var gameDifficulty = res.gameDifficulty; //当前难度
-        var ob = res["gameConfig"][gameDifficulty];
-        if (ob && ob[key]) {
+        var ob = cfg[gameDifficulty];
+        if (ob && ob[key] != void 0) {
             return ob[key];
         }
         return null;

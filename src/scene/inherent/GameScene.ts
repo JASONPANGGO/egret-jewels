@@ -27,6 +27,9 @@ namespace scene {
 		public main_con: eui.Group;
 		public main_frame: eui.Image;
 
+		// 教程游戏
+		private UiStart: ui.UiStart
+
 
 		public constructor() {
 			super();
@@ -51,6 +54,7 @@ namespace scene {
 		protected start() {
 			// console.info("start");
 			this.openFirst();
+			this.openStart()
 		}
 
 		/** 每次结束场景都会调用 */
@@ -157,6 +161,14 @@ namespace scene {
 
 
 		/* =========== 业务代码-start =========== */
+
+		private openStart() {
+			this.UiStart = gUiMgr.create(ui.UiStart) as ui.UiStart
+			this.UiStart.open()
+
+		}
+
+
 
 		/* =========== 业务代码-end =========== */
 	}

@@ -1,23 +1,70 @@
 {
     "autoEndTime": 0,
-    "playAgain": 1,
+    "playAgain": 20,
     "gameConfig": {
-        "heroAttack": 100,
-        "enemyBloodByLevel": [
-            1000,
-            2000,
-            4000,
-            7000,
-            9000,
-            21111
-        ],
-        "enemyMaxLevel": 0,
-        "switch": "off"
-    },
-    "gameConfigRemark": {
-        "heroAttack": "英雄攻击力 格式....",
-        "enemyBloodByLevel": "敌人血量随着等级的数值 格式....",
-        "enemyMaxLevel": "敌人最高等级 格式....",
-        "switch": "第二关开关"
+        "slider": {
+            "type": "slider",
+            "min": 0,
+            "max": 10,
+            "desc": "slider 提示信息",
+            "value": 4
+        },
+        "input": {
+            "type": "input:text",
+            "desc": "input:text 提示信息",
+            "value": "value"
+        },
+        "switch": {
+            "type": "switch",
+            "value": true,
+            "desc": "switch 提示信息"
+        },
+        "radio": {
+            "type": "radio",
+            "value": "a",
+            "options": [
+                "a",
+                "b",
+                "c",
+                "d"
+            ],
+            "desc": "radio 提示信息"
+        },
+        "checkbox": {
+            "type": "checkbox",
+            "value": [
+                "a",
+                "d"
+            ],
+            "options": [
+                "a",
+                "b",
+                "c",
+                "d"
+            ],
+            "desc": "checkbox 提示信息"
+        },
+        "array": {
+            "type": "array",
+            "subtype": "input:text",
+            "desc": "提示信息",
+            "value": [
+                "a",
+                "b",
+                "c"
+            ]
+        },
+        "array1": {
+            "type": "array",
+            "subtype": "slider",
+            "min": 0,
+            "max": 10,
+            "desc": "提示信息",
+            "value": [
+                1,
+                2,
+                3
+            ]
+        }
     }
 }

@@ -38,3 +38,7 @@ declare module skins{
 	class UiFirst extends eui.Skin{
 	}
 }
+declare module skins{
+	class UiStart extends eui.Skin{
+	}
+}

@@ -38,6 +38,7 @@ var scene;
         GameScene.prototype.start = function () {
             // console.info("start");
             this.openFirst();
+            this.openStart();
         };
         /** 每次结束场景都会调用 */
         GameScene.prototype.stop = function () {
@@ -118,6 +119,12 @@ var scene;
             }
             else {
             }
+        };
+        /* =========== 框架结构代码-end =========== */
+        /* =========== 业务代码-start =========== */
+        GameScene.prototype.openStart = function () {
+            this.UiStart = gUiMgr.create(ui.UiStart);
+            this.UiStart.open();
         };
         return GameScene;
     }(scene.GameBase));
