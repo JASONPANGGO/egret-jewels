@@ -126,6 +126,8 @@ var scene;
             this.UiStart = gUiMgr.create(ui.UiStart);
             this.UiStart.open();
         };
+        GameScene.prototype.loadGame = function () {
+        };
         return GameScene;
     }(scene.GameBase));
     scene.GameScene = GameScene;

@@ -15,10 +15,10 @@ var GameMgr = (function () {
         this.auto = false;
     };
     /**
-     * 读取游戏动态参数配置
-     * 动态参数模板JSON配置说明：
-     * /// <reference path="http://confluence.mobvista.com/pages/viewpage.action?pageId=30346816" />
-     */
+ * 读取游戏动态参数配置
+ * 动态参数模板JSON配置说明：
+ * /// <reference path="http://confluence.mobvista.com/pages/viewpage.action?pageId=30346816" />
+ */
     GameMgr.getConfig = function (key) {
         var res = RES.getRes("gameConfig_json");
         if (res[key]) {

@@ -15,8 +15,13 @@ var ui;
         __extends(UiStart, _super);
         function UiStart() {
             var _this = _super.call(this) || this;
+            /* =========== 框架结构代码-end =========== */
+            /* =========== 业务代码-start =========== */
+            _this.guideGrid = { collumn: 2, row: 1 };
             _this.game = [];
             _this.gameSize = 5;
+            // 当前动作还剩余的要移动的方块数量
+            _this.gridToMoveNum = 0;
             _this.skinName = skins.UiStart;
             return _this;
         }
@@ -40,8 +45,8 @@ var ui;
         UiStart.prototype.start = function () {
             // console.info("start");
             GameMgr.gameScene.setChildIndex(this, -1);
-            this.initGame();
-            this.showGuide();
+            this.enter();
+            this.initGame(this.game, gConst.game0);
         };
         /** 每次结束界面都会调用 */
         UiStart.prototype.stop = function () {
@@ -67,6 +72,7 @@ var ui;
             // this.con.scaleX = this.con.scaleY = Math.max(s1, s2);
             this.black_bg.width = this.width;
             this.black_bg.height = this.height;
+            this.con.y = 0.5 * this.height;
             if (this.screenType == 1 /* VERTICAL */) {
                 //竖屏
                 switch (this.mobileType) {
@@ -104,76 +110,126 @@ var ui;
             else {
             }
         };
+        // 引导手击中方块
+        UiStart.prototype.guideHit = function () {
+            this.hitGrid(this.guideGrid.collumn, this.guideGrid.row);
+        };
+        UiStart.prototype.enter = function () {
+            var _this = this;
+            gTween.toTopShow(this.con, 800, .5 * this.height, void 0, void 0, egret.Ease.elasticOut, void 0, {
+                callback: function () {
+                    _this.showGuide();
+                }
+            });
+        };
+        UiStart.prototype.exit = function () {
+            var _this = this;
+            gTween.fadeOut(this.black_bg, 300);
+            gTween.toBottomHide(this.con, 500, 0.5 * this.height, void 0, void 0, void 0, void 0, {
+                callback: function () {
+                    _this.close();
+                    GameMgr.gameScene.loadGame();
+                }
+            });
+        };
+        /**
+         * 通过方块的逻辑坐标获取容器中的位置坐标X和Y
+         * @param {number} collumn 逻辑坐标X
+         * @param {number} row 逻辑坐标Y
+         */
         UiStart.prototype.getXY = function (collumn, row) {
             return {
-                x: collumn * gConst.gridSize.WIDTH + 0.5 * gConst.gridSize.WIDTH,
-                y: row * gConst.gridSize.WIDTH + 0.5 * gConst.gridSize.WIDTH + gConst.gridSize.HEIGHT - gConst.gridSize.WIDTH
+                x: this.getX(collumn),
+                y: this.getY(row)
             };
         };
-        UiStart.prototype.initGame = function () {
-            this.grid = gConst.game0;
+        /**
+         * 通过方块的逻辑坐标获取容器中的位置坐标Y
+         * @param {number} row 逻辑坐标Y
+         */
+        UiStart.prototype.getY = function (row) {
+            return this.main_con.height - row * gConst.gridSize.WIDTH + 0.5 * gConst.gridSize.WIDTH - gConst.gridSize.HEIGHT;
+        };
+        /**
+         * 通过方块的逻辑坐标获取容器中的位置坐标X
+         * @param {number} collumn 逻辑坐标X
+         */
+        UiStart.prototype.getX = function (collumn) {
+            return collumn * gConst.gridSize.WIDTH + 0.5 * gConst.gridSize.WIDTH;
+        };
+        // 初始化游戏方格矩阵
+        UiStart.prototype.initGame = function (game, gameGrid) {
+            this.grid = gameGrid;
             for (var collumn = 0; collumn < this.gameSize; collumn++) {
-                this.game.push([]);
+                game.push([]);
                 for (var row = 0; row < this.gameSize; row++) {
                     var comGrid = new com.ComGrid();
                     comGrid.open(this.grid[collumn].shift());
                     var gridXY = this.getXY(collumn, row);
                     comGrid.x = gridXY.x;
-                    comGrid.y = this.main_con.height - gridXY.y;
-                    this.game[collumn].push(comGrid);
+                    comGrid.y = gridXY.y;
+                    game[collumn].push(comGrid);
                     this.main_con.addChild(comGrid);
                 }
             }
-            console.log(this.grid);
+            this.deepSetProp(game);
         };
-        /** 显示引导 */
-        UiStart.prototype.showGuide = function () {
-            var _this = this;
-            if (GameMgr.isEnd) {
-                return;
+        UiStart.prototype.deepSetProp = function (game) {
+            var foundGrid = [];
+            for (var collumn = 0; collumn < game.length; collumn++) {
+                var _loop_1 = function (row) {
+                    if (!this_1.isFound(foundGrid, com, row)) {
+                        var sameGridXY = this_1.find(game, collumn, row);
+                        var prop_1 = this_1.getProp(sameGridXY.length);
+                        if (prop_1) {
+                            var sameGrid = this_1.transferToGrid(sameGridXY, game);
+                            sameGrid.forEach(function (grid) {
+                                grid.setProp(prop_1);
+                            });
+                        }
+                        foundGrid.concat(sameGridXY);
+                    }
+                };
+                var this_1 = this;
+                for (var row = 0; row < game[collumn].length; row++) {
+                    _loop_1(row);
+                }
             }
-            if (this.showGuided) {
-                return;
-            }
-            this.showGuided = true;
-            if (!this.guide) {
-                this.guide = new com.ComGuide();
-                this.guide.open();
-            }
-            this.guide.setData(1000, { target1: this.game[1][1] }, this.main_con, {
-                pressT: 500,
-                liftT: 500
-            });
-            this.guide.play();
-            egret.setTimeout(function () {
-                _this.guide.over();
-            }, this, 2000);
-            egret.setTimeout(function () {
-                _this.guideHit();
-            }, this, 1500);
         };
-        UiStart.prototype.guideHit = function () {
-            this.hitGrid(1, 1);
-            // this.game[2][1].hit()
+        UiStart.prototype.isFound = function (arr, x, y) {
+            for (var _i = 0, arr_1 = arr; _i < arr_1.length; _i++) {
+                var p = arr_1[_i];
+                if (p.x === x && p.y === y)
+                    return true;
+            }
+            return false;
         };
-        // private gridsToHit: Array<Array<com.ComGrid | any>> = []
+        /**
+         * 击中方块的处理，获取将要破碎的方块
+         * @param {number} gridCollumn 被点击的方块逻辑坐标Collum
+         * @param {number} gridRow 被点击的方块逻辑坐标Row
+         */
         UiStart.prototype.hitGrid = function (gridCollumn, gridRow) {
-            var result = this.find(this.game, gridCollumn, gridRow);
-            console.log(result);
-            if (result)
-                this.gridBreak(result.toBreak, result.prop);
-            // this.game[gridCollumn][gridRow].hit()
-            // this.game[gridCollumn][gridRow] = 0
+            var toBreak = this.find(this.game, gridCollumn, gridRow);
+            this.gridBreak(this.game, toBreak);
         };
+        UiStart.prototype.transferToGrid = function (arr, game) {
+            return arr.map(function (p) { return game[p.x][p.y]; });
+        };
+        /**
+         * 从一个点递归搜索与之相邻相同方块
+         * @param {Array} arr 当前的游戏方块矩阵
+         * @param {number} x 被点击的方块逻辑坐标x (collumn)
+         * @param {number} y 被点击的方块逻辑坐标y (row)
+         */
         UiStart.prototype.find = function (arr, x, y) {
             if (arr === void 0) { arr = []; }
             var count = 0;
             var targetValue;
-            var toBreak = [];
+            var sameGrid = [];
             var found = [];
             deepFind(x, y);
             function deepFind(x, y) {
-                console.log(toBreak);
                 if (x >= arr.length || y >= arr[x].length)
                     return;
                 if (!targetValue)
@@ -190,8 +246,10 @@ var ui;
                     return;
                 else {
                     count++;
-                    toBreak.push(arr[x][y]);
-                    arr[x][y] = 0;
+                    sameGrid.push({
+                        x: x,
+                        y: y
+                    });
                     if (x - 1 >= 0)
                         deepFind(x - 1, y);
                     if (x + 1 < arr.length)
@@ -202,20 +260,128 @@ var ui;
                         deepFind(x, y + 1);
                 }
             }
-            if (count >= 9)
-                return { prop: 'START', toBreak: toBreak };
-            if (count >= 7)
-                return { prop: 'BOMB', toBreak: toBreak };
-            if (count >= 5)
-                return { prop: 'ROCKET', toBreak: toBreak };
-            if (count > 1)
-                return { toBreak: toBreak };
-            else
-                return;
+            return sameGrid;
         };
-        UiStart.prototype.gridBreak = function (arr, prop) {
-            arr.forEach(function (grid) {
-                grid.hit(prop);
+        /**
+         * 方块破碎并更新方块矩阵
+         * @param {Array} toBreak 将要被击碎的方块的显示对象数组
+         */
+        UiStart.prototype.gridBreak = function (game, toBreak) {
+            var _this = this;
+            var gridToBreak = this.transferToGrid(toBreak, this.game);
+            gridToBreak.forEach(function (grid, i) {
+                grid.hit(_this.getProp(toBreak.length));
+                game[toBreak[i].x][toBreak[i].y] = 0; // 矩阵元素赋值为0标记为已破碎
+            });
+            this.updateGrid(this.game);
+        };
+        /**
+         * 根据要破碎的方块数获取功能属性
+         * @param {number} toBreakNum 将要被击碎的方块的数量
+         */
+        UiStart.prototype.getProp = function (toBreakNum) {
+            if (toBreakNum >= 9)
+                return 'STAR';
+            if (toBreakNum >= 7)
+                return 'BOMB';
+            if (toBreakNum >= 5)
+                return 'ROCKET';
+            else
+                return '';
+        };
+        /**
+         * 填补破碎后的矩阵
+         * @param {Array} game 当前的游戏方块矩阵
+        */
+        UiStart.prototype.updateGrid = function (game) {
+            for (var collumn = 0; collumn < game.length; collumn++) {
+                var row = 0;
+                var toFillIndex = []; // 需要填充的索引
+                var moveGridDelay = 0; // 跌落延迟，造成错落效果
+                while (row < game[collumn].length) {
+                    if (game[collumn][row] !== 0) {
+                        if (toFillIndex.length > 0) {
+                            var toRow = toFillIndex.shift();
+                            game[collumn][toRow] = game[collumn][row]; // 矩阵移动
+                            moveGridDelay += 50;
+                            this.moveGrid(game[collumn][row], { collumn: collumn, row: row }, { collumn: collumn, row: toRow }, moveGridDelay); // 移动的动画
+                            game[collumn][row] = 0;
+                            toFillIndex.push(row);
+                        }
+                    }
+                    else {
+                        toFillIndex.push(row);
+                    }
+                    row++;
+                }
+                for (var fillRow = 0; fillRow < toFillIndex.length; fillRow++) {
+                    var newGrid = new com.ComGrid();
+                    newGrid.open(this.grid[collumn][fillRow]);
+                    newGrid.x = this.getX(collumn);
+                    newGrid.y = this.getY(fillRow + this.gameSize); //从上面掉下来
+                    this.main_con.addChild(newGrid);
+                    moveGridDelay += 50;
+                    this.moveGrid(newGrid, { collumn: collumn, row: fillRow + this.gameSize }, { collumn: collumn, row: toFillIndex[fillRow] }, moveGridDelay);
+                    game[collumn][toFillIndex[fillRow]] = newGrid;
+                }
+            }
+        };
+        /**
+         * 移动单个方块到目标位置
+         * @param {com.ComGrid} grid 要被移动的方块
+         * @param {Object} from 移动起始点
+         * @param {Object} to 移动终点
+        */
+        UiStart.prototype.moveGrid = function (grid, from, to, delay) {
+            var _this = this;
+            var perMoveTime = 400; // 移动单个方格所需时间
+            this.gridToMoveNum++;
+            egret.setTimeout(function () {
+                gTween.toMoveY(grid, _this.getY(to.row), (from.row - to.row) * perMoveTime, _this.getY(from.row), egret.Ease.backOut, void 0, {
+                    callback: function () {
+                        _this.gridToMoveNum--;
+                        if (_this.gridToMoveNum <= 0)
+                            _this.finishHit();
+                    }
+                });
+            }, this, delay);
+        };
+        // 完成单次操作之后会调用此函数
+        UiStart.prototype.finishHit = function () {
+            this.exit();
+        };
+        /** 显示引导 */
+        UiStart.prototype.showGuide = function () {
+            var _this = this;
+            if (GameMgr.isEnd) {
+                return;
+            }
+            if (this.showGuided) {
+                return;
+            }
+            this.showGuided = true;
+            if (!this.guide) {
+                this.guide = new com.ComGuide();
+                this.guide.open();
+            }
+            var guidePoint = this.game[this.guideGrid.collumn][this.guideGrid.row];
+            var guidePoint2 = this.game[this.guideGrid.collumn + 1][this.guideGrid.row + 1];
+            this.main_con.addChild(this.guide);
+            this.guide.x = guidePoint2.x;
+            this.guide.y = guidePoint2.y;
+            gTween.fadeIn(this.guide, 300, void 0, void 0, void 0, {
+                callback: function () {
+                    gTween.toMove(_this.guide, guidePoint.x, guidePoint.y, { x: 300, y: 300 }, void 0, void 0, void 0, void 0, {
+                        callback: function () {
+                            gTween.toScale(_this.guide, 0.8, 200, 1, void 0, void 0, {
+                                callback: function () {
+                                    _this.guideHit();
+                                    gTween.fadeOut(_this.guide);
+                                }
+                            });
+                        }
+                    });
+                }
             });
         };
         /** 隐藏引导 */

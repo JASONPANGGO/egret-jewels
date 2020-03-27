@@ -116,6 +116,10 @@ namespace com {
             gTween.toSmallHide(this, 500, 1, 1, egret.Ease.quadOut)
         }
 
+        public setProp(prop: string) {
+            this.prop.source = gConst.propType[prop]
+        }
+
         /* =========== 业务代码-end =========== */
     }
 }

@@ -104,6 +104,9 @@ var com;
             this.partical.start(1000);
             gTween.toSmallHide(this, 500, 1, 1, egret.Ease.quadOut);
         };
+        ComGrid.prototype.setProp = function (prop) {
+            this.prop.source = gConst.propType[prop];
+        };
         return ComGrid;
     }(com.ComFile));
     com.ComGrid = ComGrid;

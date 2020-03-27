@@ -168,7 +168,11 @@ namespace scene {
 
 		}
 
+		public loadGame() {
 
+		}
+
+		
 
 		/* =========== 业务代码-end =========== */
 	}
