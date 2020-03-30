@@ -197,6 +197,11 @@ namespace gConst {
 		STAR: 'p_g_star_png'
 	}
 
+	export const skillType = {
+		BOMB: 'p_eff_bomb_png',
+		ROCKET: 'p_eff_rocket_png'
+	}
+
 	export const gridSize = {
 		WIDTH: 83,
 		HEIGHT: 99
@@ -211,11 +216,34 @@ namespace gConst {
 	]
 
 	export const game1 = [
-		[1, 2, 3],
-		[1, 2, 3],
-		[1, 2, 3],
-		[1, 2, 3],
+		[2, 6, 6, 6, 3, 3, 3, 6],
+		[2, 2, 6, 6, 6, 3, 3, 2, 3],
+		[2, 2, 2, 6, 6, 6, 3, 2, 6, 2],
+		[1, 2, 2, 2, 6, 6, 6, 3, 6, 6, 2],
+		[1, 1, 2, 2, 2, 6, 6, 1, 3, 6, 2, 6],
+		[1, 1, 1, 2, 2, 2, 6, 6, 6, 2, 1, 3],
+		[1, 1, 1, 1, 2, 2, 2, 6, 1, 1, 1, 2, 3]
 	]
 
+	export const goals1 = [
+		{
+			jewel: 3,
+			value: 25
+		}
+	]
+
+	export const goals2 = [
+		{
+			jewel: 3,
+			value: 15
+		},
+		{
+			jewel: 1,
+			value: 10
+		}, {
+			jewel: 2,
+			value: 10
+		}
+	]
 
 }

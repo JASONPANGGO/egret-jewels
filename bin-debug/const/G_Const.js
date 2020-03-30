@@ -134,6 +134,10 @@ var gConst;
         ROCKET: 'p_g_rocket_png',
         STAR: 'p_g_star_png'
     };
+    gConst.skillType = {
+        BOMB: 'p_eff_bomb_png',
+        ROCKET: 'p_eff_rocket_png'
+    };
     gConst.gridSize = {
         WIDTH: 83,
         HEIGHT: 99
@@ -141,15 +145,37 @@ var gConst;
     gConst.game0 = [
         [2, 2, 3, 1, 2],
         [2, 6, 3, 1, 1, 2],
-        [4, 6, 6, 6, 3, 3],
-        [5, 4, 6, 5, 6],
+        [4, 6, 5, 6, 3, 3],
+        [5, 4, 3, 5, 6],
         [5, 2, 6, 3, 5]
     ];
     gConst.game1 = [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
+        [2, 6, 6, 6, 3, 3, 3, 6],
+        [2, 2, 6, 6, 6, 3, 3, 2, 3],
+        [2, 2, 2, 6, 6, 6, 3, 2, 6, 2],
+        [1, 2, 2, 2, 6, 6, 6, 3, 6, 6, 2],
+        [1, 1, 2, 2, 2, 6, 6, 1, 3, 6, 2, 6],
+        [1, 1, 1, 2, 2, 2, 6, 6, 6, 2, 1, 3],
+        [1, 1, 1, 1, 2, 2, 2, 6, 1, 1, 1, 2, 3]
+    ];
+    gConst.goals1 = [
+        {
+            jewel: 3,
+            value: 25
+        }
+    ];
+    gConst.goals2 = [
+        {
+            jewel: 3,
+            value: 15
+        },
+        {
+            jewel: 1,
+            value: 10
+        }, {
+            jewel: 2,
+            value: 10
+        }
     ];
     var _a, _b, _c, _d, _e, _f;
 })(gConst || (gConst = {}));

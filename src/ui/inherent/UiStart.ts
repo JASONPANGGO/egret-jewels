@@ -52,11 +52,13 @@ namespace ui {
         /** 注册事件 */
         protected addEvent() {
             // console.info("addEvent");
+            this.con.addEventListener(egret.TouchEvent.TOUCH_TAP, this.exit, this)
         }
 
         /** 移除事件 */
         protected removeEvent() {
             // console.info("removeEvent");
+            this.con.addEventListener(egret.TouchEvent.TOUCH_TAP, this.exit, this)
         }
 
         /** 窗口大小改变时调用 */
@@ -127,7 +129,10 @@ namespace ui {
             })
         }
 
+        private isEnd: boolean = false
         private exit() {
+            if (this.isEnd) return
+            this.isEnd = true
             gTween.fadeOut(this.black_bg, 300)
             gTween.toBottomHide(this.con, 500, 0.5 * this.height, void 0, void 0, void 0, void 0, {
                 callback: () => {
@@ -135,11 +140,11 @@ namespace ui {
                     GameMgr.gameScene.loadGame()
                 }
             })
+
         }
 
 
         /** ========== 消消乐游戏方块核心逻辑代码-start ========== */
-
 
         private grid: number[][]
         private game: Array<Array<com.ComGrid | any>> = []
@@ -180,10 +185,9 @@ namespace ui {
                 game.push([])
                 for (let row = 0; row < this.gameSize; row++) {
                     const comGrid: com.ComGrid = new com.ComGrid()
-                    comGrid.open(this.grid[collumn].shift())
+                    comGrid.open(this.grid[collumn].shift(), collumn, row)
                     const gridXY = this.getXY(collumn, row)
-                    comGrid.x = gridXY.x
-                    comGrid.y = gridXY.y
+                    comGrid.setPos(gridXY.x, gridXY.y)
                     game[collumn].push(comGrid)
                     this.main_con.addChild(comGrid)
                 }
@@ -278,7 +282,7 @@ namespace ui {
         private gridBreak(game: Array<Array<com.ComGrid | any>>, toBreak: { x: number, y: number }[]) {
             const gridToBreak = this.transferToGrid(toBreak, this.game)
             gridToBreak.forEach((grid, i) => {
-                grid.hit(this.getProp(toBreak.length))
+                grid.hit()
                 game[toBreak[i].x][toBreak[i].y] = 0 // 矩阵元素赋值为0标记为已破碎
             })
             this.updateGrid(this.game)
@@ -359,7 +363,9 @@ namespace ui {
 
         // 完成单次操作之后会调用此函数
         private finishHit(): void {
-            this.exit()
+            egret.setTimeout(() => {
+                this.exit()
+            }, this, 1000)
         }
 
         /** ========== 消消乐游戏方块核心逻辑代码-start ========== */

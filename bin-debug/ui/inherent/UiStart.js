@@ -18,6 +18,7 @@ var ui;
             /* =========== 框架结构代码-end =========== */
             /* =========== 业务代码-start =========== */
             _this.guideGrid = { collumn: 2, row: 1 };
+            _this.isEnd = false;
             _this.game = [];
             _this.gameSize = 5;
             // 当前动作还剩余的要移动的方块数量
@@ -59,10 +60,12 @@ var ui;
         /** 注册事件 */
         UiStart.prototype.addEvent = function () {
             // console.info("addEvent");
+            this.con.addEventListener(egret.TouchEvent.TOUCH_TAP, this.exit, this);
         };
         /** 移除事件 */
         UiStart.prototype.removeEvent = function () {
             // console.info("removeEvent");
+            this.con.addEventListener(egret.TouchEvent.TOUCH_TAP, this.exit, this);
         };
         /** 窗口大小改变时调用 */
         UiStart.prototype.resizeView = function () {
@@ -124,6 +127,9 @@ var ui;
         };
         UiStart.prototype.exit = function () {
             var _this = this;
+            if (this.isEnd)
+                return;
+            this.isEnd = true;
             gTween.fadeOut(this.black_bg, 300);
             gTween.toBottomHide(this.con, 500, 0.5 * this.height, void 0, void 0, void 0, void 0, {
                 callback: function () {
@@ -164,10 +170,9 @@ var ui;
                 game.push([]);
                 for (var row = 0; row < this.gameSize; row++) {
                     var comGrid = new com.ComGrid();
-                    comGrid.open(this.grid[collumn].shift());
+                    comGrid.open(this.grid[collumn].shift(), collumn, row);
                     var gridXY = this.getXY(collumn, row);
-                    comGrid.x = gridXY.x;
-                    comGrid.y = gridXY.y;
+                    comGrid.setPos(gridXY.x, gridXY.y);
                     game[collumn].push(comGrid);
                     this.main_con.addChild(comGrid);
                 }
@@ -267,10 +272,9 @@ var ui;
          * @param {Array} toBreak 将要被击碎的方块的显示对象数组
          */
         UiStart.prototype.gridBreak = function (game, toBreak) {
-            var _this = this;
             var gridToBreak = this.transferToGrid(toBreak, this.game);
             gridToBreak.forEach(function (grid, i) {
-                grid.hit(_this.getProp(toBreak.length));
+                grid.hit();
                 game[toBreak[i].x][toBreak[i].y] = 0; // 矩阵元素赋值为0标记为已破碎
             });
             this.updateGrid(this.game);
@@ -348,7 +352,10 @@ var ui;
         };
         // 完成单次操作之后会调用此函数
         UiStart.prototype.finishHit = function () {
-            this.exit();
+            var _this = this;
+            egret.setTimeout(function () {
+                _this.exit();
+            }, this, 1000);
         };
         /** 显示引导 */
         UiStart.prototype.showGuide = function () {

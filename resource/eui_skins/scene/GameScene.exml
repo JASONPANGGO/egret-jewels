@@ -14,9 +14,6 @@
 
 
 
-			<e:layout>
-				<e:TileLayout horizontalGap="0"/>
-			</e:layout>
 		</e:Group>
 	</e:Group>
 	<e:Group id="ui_con" anchorOffsetY="87" height="174" left="0" bottom="0" anchorOffsetX="375">
@@ -39,6 +36,23 @@
 			<e:Group id="ui_goals" x="163" y="0">
 				<e:Image source="p_goal_board_png" x="0" y="33.5"/>
 				<e:Image id="ui_goals_title" source="p_goal_png" x="173.5" y="46" anchorOffsetX="84.5" anchorOffsetY="46"/>
+				<e:Group id="goals_con" x="42" y="55" width="262" height="73">
+					<e:Group id="goal0" width="74" height="74" x="51" y="37" anchorOffsetX="37" anchorOffsetY="37">
+						<e:Image id="goal0_jewel" x="2.25" y="6.25" scaleX="0.7" scaleY="0.7" source=""/>
+						<e:BitmapLabel id="goal0_value" x="37" y="40.75" font="p_goalnum_fnt" text="" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+					</e:Group>
+					<e:Group id="goal1" width="74" height="74" x="61" y="47" anchorOffsetX="37" anchorOffsetY="37">
+						<e:Image id="goal0_jewel0" x="2.25" y="6.25" scaleX="0.7" scaleY="0.7" source=""/>
+						<e:BitmapLabel id="goal0_value0" x="37" y="40.75" text="" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" font="p_goalnum_fnt"/>
+					</e:Group>
+					<e:Group id="goal2" width="74" height="74" x="71" y="57" anchorOffsetX="37" anchorOffsetY="37">
+						<e:Image id="goal0_jewel1" x="2.25" y="6.25" scaleX="0.7" scaleY="0.7" source=""/>
+						<e:BitmapLabel id="goal0_value1" x="37" y="40.75" font="p_goalnum_fnt" text="" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+					</e:Group>
+					<e:layout>
+						<e:HorizontalLayout horizontalAlign="center"/>
+					</e:layout>
+				</e:Group>
 			</e:Group>
 		</e:Group>
 	</e:Group>
