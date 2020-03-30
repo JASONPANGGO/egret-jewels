@@ -7,13 +7,16 @@ namespace ui {
         public bg: eui.Image;
         public leaves1: eui.Image;
         public leaves2: eui.Image;
+        public score_con: eui.Group;
+        
         public star0: eui.Image;
         public star1: eui.Image;
         public star2: eui.Image;
+        public score: eui.BitmapLabel;
+
         public logo_point: eui.Image;
         public btnCon: eui.Group;
         public btn: eui.Image;
-        public score: eui.BitmapLabel;
         public logo: com.ComMovieClip;
 
         public constructor() {
