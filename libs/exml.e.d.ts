@@ -42,3 +42,7 @@ declare module skins{
 	class UiStart extends eui.Skin{
 	}
 }
+declare module skins{
+	class UiEnd extends eui.Skin{
+	}
+}

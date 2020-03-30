@@ -4,7 +4,7 @@ namespace com {
 	 */
     export class ComGrid extends com.ComFile {
 
-        public jewelIndex: number
+        public jewelIndex: number | string
         private propName: string
         public skill: string
 
@@ -26,14 +26,21 @@ namespace com {
 		 * 初始化
 		 * @param {any[]} args 构建传参会通过init()传过去
 		 */
-        protected init(jewelIndex: number, collumn: number, row: number) {
+        protected init(jewelIndex: number | string, collumn: number, row: number) {
             // console.info("init", ...args);
+
             this.jewelIndex = jewelIndex
-            this.jewel.source = 'grid' + jewelIndex + '_png'
             gComMgr.setObjSize(this.jewel, true)
             gComMgr.setObjSize(this.con, true)
             this.anchorOffsetX = this.anchorOffsetY = gConst.gridSize.WIDTH / 2;
             this.POS = { collumn: collumn, row: row }
+
+            if (typeof jewelIndex === 'string') {
+                this.propName = 'ROCKET'
+                this.setSkill()
+            } else {
+                this.jewel.source = 'grid' + jewelIndex + '_png'
+            }
         }
 
         /** 首次创建组件时调用 */
@@ -122,6 +129,7 @@ namespace com {
                 gTween.toSmallHide(this, 500, 1, 1, egret.Ease.quadOut, void 0, {
                     callback: () => {
                         this.close()
+                        this.partical.stop(true)
                     }
                 })
             } else {
@@ -147,10 +155,11 @@ namespace com {
             this.jewel.visible = false
             if (this.propName === 'STAR') {
                 this.skill_img.source = `p_eff_${this.jewelIndex}_ball_png`
-                gTween.toBigShow(this.skill_img, 500, void 0, void 0, egret.Ease.elasticOut)
             } else {
                 this.skill_img.source = gConst.skillType[this.propName]
+                this.skill_img.rotation = 90
             }
+            gTween.toBigShow(this.skill_img, 500, void 0, void 0, egret.Ease.elasticOut)
             this.skill = this.propName
         }
 
@@ -159,18 +168,21 @@ namespace com {
                 this.skill_img.source = 'p_eff_0_ball_png'
                 let mc = new com.ComMovieClip()
                 const frameInterval = 40
-                GameMgr.gameScene.addChild(mc)
+                GameMgr.gameScene.main_grid.addChild(mc)
                 mc.open()
-                mc.interval = 40
+                mc.interval = frameInterval
+                mc.anchorOffsetX = 542
+                mc.anchorOffsetY = 904
+                mc.x = this.x
+                mc.y = this.y
                 mc.setData([new data.McData('ball', 20, 'p_ball_{1}_png')])
                 mc.gotoAndPlay('ball', 1)
                 egret.setTimeout(() => {
                     mc.dispose()
                     GameMgr.gameScene.breakAll(this.POS.collumn, this.POS.row)
-                }, this, frameInterval * 20)
-            } else if (this.skill === 'ROCKET' && skillName === 'BOMB') {
-
-            } else if (this.skill === 'BOMB' && skillName === 'ROCKET') {
+                }, this, (frameInterval - 3) * 20)
+            } else if (this.skill === 'BOMB') {
+                this.skill_img.source = 'p_eff_0_bomb_png'
 
             }
         }

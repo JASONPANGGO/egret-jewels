@@ -18,8 +18,10 @@ var scene;
             _this.steps = 24;
             _this.currentLevelIndex = 1;
             _this.goals = [];
+            _this.score = 0;
             _this.game = [];
             _this.gameSize = 7;
+            _this.needUpdate = true;
             // 当前动作还剩余的要移动的方块数量
             _this.gridToMoveNum = 0;
             _this.skinName = skins.GameScene;
@@ -140,21 +142,25 @@ var scene;
             this.UiStart.open();
         };
         GameScene.prototype.loadGame = function () {
+            this.game = [];
             this.initGame(this.game, gConst['game' + this.currentLevelIndex]);
             this.initUI(this.currentLevelIndex);
             this.setSteps(this.steps);
         };
         GameScene.prototype.initUI = function (levelIndex) {
-            this.goals = gConst.goals1;
+            this.goals = gConst['goals' + this.currentLevelIndex];
             for (var i = 0; i < this.goals.length; i++) {
                 this['goal' + i + '_jewel'].source = "grid" + this.goals[i].jewel + "_png";
+                this['goal' + i + '_value'].visible = true;
                 this['goal' + i + '_value'].text = "" + this.goals[i].value;
+                this['goal' + i + '_done'].visible = false;
             }
+            this.star_bar_full.mask = this.star_bar_mask;
+            this.ui_score_label.text = "" + this.score;
         };
         GameScene.prototype.onTap = function (evt) {
             var gridPos = evt.currentTarget.POS;
             var gridProp = evt.currentTarget.propName;
-            console.log(gridPos, gridProp);
             if (this.gridToMoveNum > 0)
                 return; // 方块还在移动的时候不可操作
             if (this.useSteps()) {
@@ -204,6 +210,7 @@ var scene;
         };
         // 初始化游戏方格矩阵
         GameScene.prototype.initGame = function (game, gameGrid) {
+            console.log(game, gameGrid);
             this.grid = gameGrid;
             for (var collumn = 0; collumn < this.gameSize; collumn++) {
                 game.push([]);
@@ -219,6 +226,7 @@ var scene;
                     this.moveGrid(comGrid, { collumn: collumn, row: this.gameSize }, { collumn: collumn, row: row }, 100 * row); // 初始化跌落效果
                 }
             }
+            this.game = game;
             this.deepSetProp(game);
         };
         // 遍历设置属性
@@ -289,8 +297,8 @@ var scene;
                     // 比较功能是否一样
                     if (!targetValue)
                         targetValue = arr[x][y].skill;
-                    if (targetValue !== arr[x][y].skill)
-                        return;
+                    if (targetValue !== arr[x][y].skill && arr[x][y].skill !== 'ROCKET')
+                        return; // 点击BOMB时，ROCKET也可以
                 }
                 else {
                     // 比较jewelIndex即宝石颜色是否一样
@@ -322,6 +330,10 @@ var scene;
          */
         GameScene.prototype.hitGrid = function (gridCollumn, gridRow, propName) {
             var toBreak = this.find(this.game, gridCollumn, gridRow);
+            if (gridCollumn === 6 && gridRow === 0) {
+                this.setStarBar(1);
+                this.score += 200;
+            }
             switch (propName) {
                 case 'STAR':
                 case 'ROCKET':
@@ -333,6 +345,14 @@ var scene;
                     break;
             }
         };
+        GameScene.prototype.setStarBar = function (grade) {
+            var _this = this;
+            gTween.toHeight(this.star_bar_mask, this.star_bar_full.height - this['ui_star' + grade].y, 300, void 0, void 0, void 0, {
+                callback: function () {
+                    _this['ui_star' + grade].source = 'p_star_g_png';
+                }
+            });
+        };
         /**
          * 方块破碎并更新方块矩阵
          * @param {Array} toBreak 将要被击碎的方块的显示对象数组
@@ -341,31 +361,42 @@ var scene;
             var _this = this;
             var gridToBreak = this.transferToGrid(toBreak, this.game);
             gridToBreak.forEach(function (grid, i) {
-                var goalIndex = _this.checkGoals(grid.jewelIndex);
-                if (goalIndex !== 0 && !goalIndex) {
-                    grid.hit();
+                // 探空，可能已经被清除（同一个位置清除两次的情况）
+                if (grid) {
+                    var goalIndex = _this.checkGoals(grid.jewelIndex);
+                    if (goalIndex !== 0 && !goalIndex) {
+                        grid.hit();
+                        _this.score += 50;
+                        console.log('gridBreak', _this.score);
+                        _this.ui_score_label.text = "" + _this.score;
+                    }
+                    else {
+                        _this.moveGridToGoal(grid, goalIndex);
+                    }
+                    game[toBreak[i].x][toBreak[i].y] = 0; // 矩阵元素赋值为0标记为已破碎
                 }
-                else {
-                    _this.moveGridToGoal(grid, goalIndex);
-                }
-                game[toBreak[i].x][toBreak[i].y] = 0; // 矩阵元素赋值为0标记为已破碎
             });
-            this.updateGrid(this.game);
+            if (this.needUpdate)
+                this.updateGrid(this.game);
         };
         GameScene.prototype.moveGridToGoal = function (grid, goalIndex) {
             var _this = this;
-            var moveTime = 600;
+            var moveTime = 800;
             var gp = gComMgr.toGlobal(grid);
             var goal_gp = gComMgr.toGlobal(this['goal' + goalIndex]);
             GameMgr.gameScene.addChild(grid);
             grid.x = gp.x;
             grid.y = gp.y;
-            gTween.toMove(grid, goal_gp.x, goal_gp.y, { x: 600, y: 600 }, gp.x, gp.y, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
+            this.game[grid.POS.collumn][grid.POS.row] = 0;
+            gTween.toMove(grid, goal_gp.x, goal_gp.y, { x: moveTime, y: moveTime }, gp.x, gp.y, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
                 callback: function () {
                     grid.close();
                     _this.goals[goalIndex].value--;
                     var value = _this.goals[goalIndex].value;
                     _this['goal' + goalIndex + '_value'].text = "" + value;
+                    _this.score += 50;
+                    console.log('move', _this.score);
+                    _this.ui_score_label.text = "" + _this.score;
                 }
             });
         };
@@ -377,7 +408,10 @@ var scene;
             }
             return false;
         };
+        // 被技能击碎全部，从参数位置开始
         GameScene.prototype.breakAll = function (collumn, row) {
+            this.setStarBar(2);
+            this.score = 775;
             var count = 0;
             var game = this.game;
             for (var y = 0; y < game.length; y++) {
@@ -395,15 +429,23 @@ var scene;
             function breakRow(row) {
                 count++;
                 var _loop_2 = function (c) {
+                    var grid = game[c][row];
                     egret.setTimeout(function () {
-                        var goalIndex = GameMgr.gameScene.checkGoals(game[c][row].jewelIndex);
+                        if (!grid)
+                            return;
+                        var goalIndex = GameMgr.gameScene.checkGoals(grid.jewelIndex);
                         if (goalIndex !== 0 && !goalIndex) {
-                            game[c][row].hit();
+                            grid.hit();
+                            GameMgr.gameScene.score += 50;
+                            GameMgr.gameScene.ui_score_label.text = "" + GameMgr.gameScene.score;
                         }
                         else {
-                            GameMgr.gameScene.moveGridToGoal(game[c][row], goalIndex);
+                            GameMgr.gameScene.moveGridToGoal(grid, goalIndex);
                         }
-                        if (count - game.length - 1 === 0) {
+                        // 全部都清除的时候
+                        if (++count - GameMgr.gameScene.gameSize * GameMgr.gameScene.gameSize === GameMgr.gameScene.gameSize - 1) {
+                            GameMgr.gameScene.goal0_done.visible = true;
+                            GameMgr.gameScene.goal0_value.visible = false;
                             GameMgr.gameScene.bonus();
                         }
                     }, this_2, count * 100);
@@ -414,7 +456,99 @@ var scene;
                 }
             }
         };
-        GameScene.prototype.bonus = function () {
+        GameScene.prototype.bonus = function (clearAll) {
+            var _this = this;
+            if (clearAll === void 0) { clearAll = false; }
+            if (clearAll) {
+                this.game.forEach(function (collumn) {
+                    collumn.forEach(function (grid) {
+                        if (grid) {
+                            grid.close();
+                        }
+                    });
+                });
+            }
+            this.game = [];
+            var bonus = [];
+            for (var i = 0; i < gConst.bonus.length; i++) {
+                bonus.push([]);
+                for (var j = 0; j < gConst.bonus[i].length; j++) {
+                    bonus[i].push(gConst.bonus[i][j]);
+                }
+            }
+            this.initGame(this.game, bonus);
+            egret.setTimeout(function () {
+                _this.hitRocket(_this.game);
+            }, this, 500);
+        };
+        GameScene.prototype.hitRocket = function (game) {
+            var _this = this;
+            var shootDelay = 1000;
+            var _loop_3 = function (collumn) {
+                var _loop_4 = function (row) {
+                    var rocketDir = game[collumn][row].jewelIndex;
+                    if (typeof rocketDir === 'string') {
+                        var rocket_1 = game[collumn][row];
+                        var smoke_1 = new com.ComParticle();
+                        smoke_1.setData(rocket_1, 'smoke');
+                        if (rocketDir === 'y0') {
+                            rocket_1.rotation = -90;
+                        }
+                        if (rocketDir === 'y1') {
+                            rocket_1.rotation = 90;
+                        }
+                        if (rocketDir === 'x1') {
+                            rocket_1.rotation = 180;
+                        }
+                        smoke_1.start();
+                        egret.setTimeout(function () {
+                            smoke_1.stop();
+                        }, this_3, shootDelay + 800);
+                        egret.setTimeout(function () {
+                            if (rocketDir === 'y0') {
+                                gTween.toMoveY(rocket_1, 2 * _this.height, 800);
+                            }
+                            else if (rocketDir === 'y1') {
+                                gTween.toMoveY(rocket_1, -2 * _this.height, 800);
+                            }
+                            else if (rocketDir === 'x0') {
+                                gTween.toMoveX(rocket_1, -2 * _this.width, 800);
+                            }
+                            else if (rocketDir === 'x1') {
+                                gTween.toMoveX(rocket_1, 2 * _this.width, 800);
+                            }
+                        }, this_3, shootDelay);
+                    }
+                    else {
+                        egret.setTimeout(function () {
+                            var grid = game[collumn][row];
+                            var goalIndex = _this.checkGoals(grid.jewelIndex);
+                            if (goalIndex !== 0 || !goalIndex) {
+                                grid.hit();
+                                _this.score += 50;
+                                console.log('rocket', _this.score);
+                                _this.ui_score_label.text = "" + _this.score;
+                            }
+                            else {
+                                _this.moveGridToGoal(grid, goalIndex);
+                            }
+                        }, this_3, 800);
+                    }
+                };
+                for (var row = 0; row < game[collumn].length; row++) {
+                    _loop_4(row);
+                }
+            };
+            var this_3 = this;
+            for (var collumn = 0; collumn < game.length; collumn++) {
+                _loop_3(collumn);
+            }
+            if (this.needUpdate) {
+                egret.setTimeout(function () {
+                    _this.currentLevelIndex++;
+                    _this.loadGame();
+                }, this, shootDelay + 500);
+            }
         };
         /**
          * 连击破碎，有属性的方块破碎时调用
@@ -426,38 +560,124 @@ var scene;
             var targetXY = this.getXY(gridCollumn, gridRow);
             var moveTime = 400;
             var hitTarget = game[gridCollumn][gridRow];
-            switch (propName) {
-                case 'STAR':
-                    gridToBreak.forEach(function (grid, i) {
-                        if (grid.POS.collumn === gridCollumn && grid.POS.row === gridRow) {
-                            egret.setTimeout(function () {
-                                if (grid.skill) {
-                                    grid.upgradeSkill('STAR');
-                                }
-                                else {
-                                    grid.setSkill();
-                                }
-                            }, _this, 200);
+            gridToBreak.forEach(function (grid, i) {
+                if (grid.POS.collumn === gridCollumn && grid.POS.row === gridRow) {
+                    egret.setTimeout(function () {
+                        // 已经变成功能方块
+                        if (grid.skill) {
+                            grid.upgradeSkill(propName);
+                            if (propName === 'BOMB') {
+                                _this.bigRocketShoot(grid.POS);
+                            }
                         }
                         else {
-                            gTween.toMove(grid, targetXY.x, targetXY.y, { x: moveTime, y: moveTime }, void 0, void 0, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
-                                callback: function () {
-                                    grid.hit(false);
-                                    if (i === gridToBreak.length - 1)
-                                        _this.updateGrid(game);
-                                }
-                            });
-                            game[grid.POS.collumn][grid.POS.row] = 0;
+                            // 还未变成功能方块
+                            grid.setSkill();
+                        }
+                    }, _this, 400);
+                }
+                else {
+                    var goalIndex = _this.checkGoals(grid.jewelIndex);
+                    if (goalIndex === 0 || goalIndex) {
+                        _this.goals[goalIndex].value--;
+                        _this['goal' + goalIndex + '_value'].text = "" + _this.goals[goalIndex].value;
+                    }
+                    // 飞向合体
+                    gTween.toMove(grid, targetXY.x, targetXY.y, { x: moveTime, y: moveTime }, void 0, void 0, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
+                        callback: function () {
+                            grid.hit(false);
+                            game[toBreak[i].x][toBreak[i].y] = 0;
+                            if (i === 1) {
+                                if (!grid.skill)
+                                    _this.updateGrid(game); // 最后一个
+                            }
                         }
                     });
-                    break;
-                case 'BOMB':
-                    break;
-                case 'ROCKET':
-                    break;
-                default:
-                    break;
-            }
+                }
+            });
+        };
+        GameScene.prototype.bigRocketShoot = function (POS) {
+            var _this = this;
+            var targetXY = this.getXY(POS.collumn, POS.row);
+            var mc = new com.ComMovieClip();
+            mc.open();
+            mc.setData([new data.McData('rocket', 31, 'p_rocket_{1}_png')]);
+            this.main_grid.addChild(mc);
+            mc.anchorOffsetX = 166;
+            mc.anchorOffsetY = 160;
+            mc.x = targetXY.x;
+            mc.y = targetXY.y;
+            mc.scaleX = mc.scaleY = 3;
+            mc.gotoAndPlay('rocket', 1);
+            var gridToBreak = [];
+            this.needUpdate = false;
+            egret.setTimeout(function () {
+                for (var c = 0; c < _this.gameSize; c++) {
+                    for (var i = 0; i < 2; i++) {
+                        if (i === 0) {
+                            if (POS.collumn + c < _this.gameSize)
+                                gridToBreak.push({ x: POS.collumn + c, y: POS.row });
+                            if (POS.collumn - c >= 0)
+                                gridToBreak.push({ x: POS.collumn - c, y: POS.row });
+                        }
+                        else {
+                            if (POS.collumn + c < _this.gameSize && POS.row + i < _this.gameSize)
+                                gridToBreak.push({ x: POS.collumn + c, y: POS.row + i });
+                            if (POS.collumn - c >= 0 && POS.row + i < _this.gameSize)
+                                gridToBreak.push({ x: POS.collumn - c, y: POS.row + i });
+                            if (POS.collumn - c >= 0 && POS.row - i >= 0 && _this.game[POS.collumn - c][POS.row - i] !== 0)
+                                gridToBreak.push({ x: POS.collumn - c, y: POS.row - i });
+                            if (POS.collumn + c < _this.gameSize && POS.row - i >= 0 && _this.game[POS.collumn + c][POS.row - i] !== 0)
+                                gridToBreak.push({ x: POS.collumn + c, y: POS.row - i });
+                        }
+                    }
+                }
+                _this.gridBreak(_this.game, gridToBreak);
+            }, this, 500);
+            egret.setTimeout(function () {
+                var gridToBreak2 = [];
+                for (var r = 0; r < _this.gameSize; r++) {
+                    for (var i = 0; i < 2; i++) {
+                        if (i === 0) {
+                            if (POS.row + r < _this.gameSize)
+                                gridToBreak2.push({ x: POS.collumn, y: POS.row + r });
+                            if (POS.row - r >= 0)
+                                gridToBreak2.push({ x: POS.collumn, y: POS.row - r });
+                        }
+                        else {
+                            if (POS.row + r < _this.gameSize && POS.collumn + i < _this.gameSize)
+                                gridToBreak2.push({ x: POS.collumn + i, y: POS.row + r });
+                            if (POS.row - r >= 0 && POS.collumn + i < _this.gameSize)
+                                gridToBreak2.push({ x: POS.collumn + i, y: POS.row - r });
+                            if (POS.row - r >= 0 && POS.collumn - i >= 0)
+                                gridToBreak2.push({ x: POS.collumn - i, y: POS.row - r });
+                            if (POS.row + r < _this.gameSize && POS.collumn - i >= 0)
+                                gridToBreak2.push({ x: POS.collumn - i, y: POS.row + r });
+                        }
+                    }
+                }
+                _this.needUpdate = false;
+                _this.gridBreak(_this.game, gridToBreak2);
+            }, this, 1000);
+            egret.setTimeout(function () {
+                _this.goal0_value.visible = false;
+                _this.goal1_value.visible = false;
+                _this.goal2_value.visible = false;
+                _this.goal0_done.visible = true;
+                _this.goal1_done.visible = true;
+                _this.goal2_done.visible = true;
+                gTween.toHeight(_this.star_bar_mask, _this.star_bar_full.height, 300, void 0, void 0, void 0, {
+                    callback: function () {
+                        _this.ui_star3.source = 'p_star_g_png';
+                    }
+                });
+                gComMgr.rmObj(mc);
+                _this.bonus(true);
+            }, this, 2000);
+            egret.setTimeout(function () {
+                _this.closeFirst();
+                _this.openEnd();
+            }, this, 4500);
         };
         /**
          * 根据要破碎的方块数获取功能属性
@@ -482,6 +702,7 @@ var scene;
                 var row = 0;
                 var toFillIndex = []; // 需要填充的索引
                 var moveGridDelay = 0; // 跌落延迟，造成错落效果
+                // 寻找空缺位置
                 while (row < game[collumn].length) {
                     if (game[collumn][row] !== 0) {
                         if (toFillIndex.length > 0) {
@@ -499,9 +720,10 @@ var scene;
                     }
                     row++;
                 }
+                // 补充空缺位置
                 for (var fillRow = 0; fillRow < toFillIndex.length; fillRow++) {
                     var newGrid = new com.ComGrid();
-                    newGrid.open(this.grid[collumn][fillRow]);
+                    newGrid.open(this.grid[collumn].shift());
                     newGrid.x = this.getX(collumn);
                     newGrid.y = this.getY(fillRow + this.gameSize); //从上面掉下来
                     this.main_grid.addChild(newGrid);

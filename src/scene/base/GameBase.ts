@@ -29,6 +29,7 @@ namespace scene {
 		private endDelay: number; //结束延迟
 
 		private UiFirst: ui.UiFirst;
+		private UiEnd: ui.UiEnd
 
 		public constructor() {
 			super();
@@ -418,6 +419,9 @@ namespace scene {
 		/** 显示结束界面 */
 		public showEnd() {
 			this.gameEnd();
+
+			this.UiEnd = gUiMgr.create(ui.UiEnd) as ui.UiEnd;
+			this.UiEnd.open()
 
 			this.showEndOther();
 		}

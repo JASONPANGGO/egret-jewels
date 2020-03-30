@@ -362,6 +362,8 @@ var scene;
         /** 显示结束界面 */
         GameBase.prototype.showEnd = function () {
             this.gameEnd();
+            this.UiEnd = gUiMgr.create(ui.UiEnd);
+            this.UiEnd.open();
             this.showEndOther();
         };
         /** 结束界面其它元素展示 */

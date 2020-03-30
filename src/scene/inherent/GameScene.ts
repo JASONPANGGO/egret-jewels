@@ -14,14 +14,19 @@ namespace scene {
 		public ui_steps: eui.Group;
 		public ui_steps_title: eui.Image;
 		public ui_steps_label: eui.BitmapLabel;
-		public ui_star1: eui.Image;
-		public ui_star2: eui.Image;
-		public ui_star3: eui.Image;
-		public ui_text: eui.Group;
+
 		public ui_score: eui.Group;
 		public ui_score_label: eui.BitmapLabel;
 		public ui_goals: eui.Group;
 		public ui_goals_title: eui.Image;
+
+		public star_bar: eui.Group;
+		public star_bar_full: eui.Image;
+		public star_bar_mask: eui.Rect;
+		public ui_star1: eui.Image;
+		public ui_star2: eui.Image;
+		public ui_star3: eui.Image;
+
 
 		// 游戏主体
 		public main_con: eui.Group;
@@ -30,15 +35,23 @@ namespace scene {
 
 		// 目标
 		public goals_con: eui.Group;
+
 		public goal0: eui.Group;
 		public goal0_jewel: eui.Image;
 		public goal0_value: eui.BitmapLabel;
+
 		public goal1: eui.Group;
 		public goal1_jewel: eui.Image;
 		public goal1_value: eui.BitmapLabel;
+
 		public goal2: eui.Group;
 		public goal2_jewel: eui.Image;
 		public goal2_value: eui.BitmapLabel;
+
+		public goal0_done: eui.Image;
+		public goal1_done: eui.Image;
+		public goal2_done: eui.Image;
+
 
 
 		// 教程游戏
@@ -192,25 +205,31 @@ namespace scene {
 		private steps: number = 24
 		private currentLevelIndex: number = 1
 		private goals: { jewel: number, value: number }[] = []
+		private score: number = 0
 
 		public loadGame() {
+			this.game = []
 			this.initGame(this.game, gConst['game' + this.currentLevelIndex])
 			this.initUI(this.currentLevelIndex)
 			this.setSteps(this.steps)
 		}
 
 		private initUI(levelIndex) {
-			this.goals = gConst.goals1
+			this.goals = gConst['goals' + this.currentLevelIndex]
 			for (let i = 0; i < this.goals.length; i++) {
 				this['goal' + i + '_jewel'].source = `grid${this.goals[i].jewel}_png`
+				this['goal' + i + '_value'].visible = true
 				this['goal' + i + '_value'].text = `${this.goals[i].value}`
+				this['goal' + i + '_done'].visible = false
 			}
+			this.star_bar_full.mask = this.star_bar_mask
+			this.ui_score_label.text = `${this.score}`
+
 		}
 
 		private onTap(evt: egret.TouchEvent) {
 			const gridPos = evt.currentTarget.POS
 			const gridProp = evt.currentTarget.propName
-			console.log(gridPos, gridProp);
 			if (this.gridToMoveNum > 0) return // 方块还在移动的时候不可操作
 			if (this.useSteps()) {
 				this.hitGrid(gridPos.collumn, gridPos.row, gridProp)
@@ -221,7 +240,6 @@ namespace scene {
 
 
 		private useSteps() {
-
 			if (this.steps > 0) {
 				this.steps--
 				this.setSteps(this.steps)
@@ -238,7 +256,7 @@ namespace scene {
 
 		/** ========== 消消乐游戏方块核心逻辑代码-start ========== */
 
-		private grid: number[][]
+		private grid: Array<Array<number | string>>
 		private game: Array<Array<com.ComGrid | any>> = []
 		private gameSize: number = 7
 
@@ -262,7 +280,6 @@ namespace scene {
 			return this.main_grid.height - row * gConst.gridSize.WIDTH + 0.5 * gConst.gridSize.WIDTH - gConst.gridSize.HEIGHT
 		}
 
-
         /**
          * 通过方块的逻辑坐标获取容器中的位置坐标X
          * @param {number} collumn 逻辑坐标X
@@ -272,7 +289,8 @@ namespace scene {
 		}
 
 		// 初始化游戏方格矩阵
-		private initGame(game: Array<Array<com.ComGrid | any>>, gameGrid: number[][]): void {
+		private initGame(game: Array<Array<com.ComGrid | any>>, gameGrid: Array<Array<number | string>>): void {
+			console.log(game, gameGrid);
 			this.grid = gameGrid
 			for (let collumn = 0; collumn < this.gameSize; collumn++) {
 				game.push([])
@@ -288,6 +306,7 @@ namespace scene {
 					this.moveGrid(comGrid, { collumn: collumn, row: this.gameSize }, { collumn: collumn, row: row }, 100 * row) // 初始化跌落效果
 				}
 			}
+			this.game = game
 			this.deepSetProp(game)
 		}
 
@@ -357,7 +376,7 @@ namespace scene {
 				if (skillMode) {
 					// 比较功能是否一样
 					if (!targetValue) targetValue = arr[x][y].skill
-					if (targetValue !== arr[x][y].skill) return
+					if (targetValue !== arr[x][y].skill && arr[x][y].skill !== 'ROCKET') return // 点击BOMB时，ROCKET也可以
 				} else {
 					// 比较jewelIndex即宝石颜色是否一样
 					if (!targetValue) targetValue = arr[x][y].jewelIndex
@@ -389,6 +408,11 @@ namespace scene {
 		private hitGrid(gridCollumn: number, gridRow: number, propName: string): void {
 			const toBreak: { x: number, y: number }[] = this.find(this.game, gridCollumn, gridRow)
 
+			if (gridCollumn === 6 && gridRow === 0) {
+				this.setStarBar(1)
+				this.score += 200
+			}
+
 			switch (propName) {
 				case 'STAR':
 				case 'ROCKET':
@@ -401,6 +425,15 @@ namespace scene {
 			}
 		}
 
+		private setStarBar(grade: number) {
+			gTween.toHeight(this.star_bar_mask, this.star_bar_full.height - this['ui_star' + grade].y, 300, void 0, void 0, void 0, {
+				callback: () => {
+					this['ui_star' + grade].source = 'p_star_g_png'
+				}
+			})
+		}
+
+		private needUpdate: boolean = true
         /**
          * 方块破碎并更新方块矩阵
          * @param {Array} toBreak 将要被击碎的方块的显示对象数组 
@@ -409,39 +442,50 @@ namespace scene {
 			const gridToBreak = this.transferToGrid(toBreak, this.game)
 
 			gridToBreak.forEach((grid, i) => {
-				const goalIndex = this.checkGoals(grid.jewelIndex)
+				// 探空，可能已经被清除（同一个位置清除两次的情况）
+				if (grid) {
 
-				if (goalIndex !== 0 && !goalIndex) {
-					grid.hit()
-				} else {
-					this.moveGridToGoal(grid, goalIndex)
+					const goalIndex = this.checkGoals(grid.jewelIndex)
+					if (goalIndex !== 0 && !goalIndex) {
+						grid.hit()
+						this.score += 50
+						console.log('gridBreak', this.score);
+						this.ui_score_label.text = `${this.score}`
+					} else {
+						this.moveGridToGoal(grid, goalIndex)
+					}
+					game[toBreak[i].x][toBreak[i].y] = 0 // 矩阵元素赋值为0标记为已破碎
 				}
-				game[toBreak[i].x][toBreak[i].y] = 0 // 矩阵元素赋值为0标记为已破碎
 			})
-			this.updateGrid(this.game)
+
+			if (this.needUpdate) this.updateGrid(this.game)
 		}
 
 		private moveGridToGoal(grid: com.ComGrid, goalIndex: number) {
-			const moveTime = 600
+			const moveTime = 800
 			const gp = gComMgr.toGlobal(grid)
 			const goal_gp = gComMgr.toGlobal(this['goal' + goalIndex])
 			GameMgr.gameScene.addChild(grid)
 			grid.x = gp.x
 			grid.y = gp.y
-			gTween.toMove(grid, goal_gp.x, goal_gp.y, { x: 600, y: 600 }, gp.x, gp.y, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
+			this.game[grid.POS.collumn][grid.POS.row] = 0
+			gTween.toMove(grid, goal_gp.x, goal_gp.y, { x: moveTime, y: moveTime }, gp.x, gp.y, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
 				callback: () => {
 					grid.close()
 					this.goals[goalIndex].value--
 					const value = this.goals[goalIndex].value
 					this['goal' + goalIndex + '_value'].text = `${value}`
+
+					this.score += 50
+					console.log('move', this.score);
+					this.ui_score_label.text = `${this.score}`
 				}
 			})
 		}
 
 
-		private checkGoals(jewelIndex: number) {
+		private checkGoals(jewelIndex: number | string) {
 			const goals = this.goals
-
 
 			for (let i = 0; i < goals.length; i++) {
 				if (goals[i].jewel === jewelIndex) return i
@@ -451,9 +495,10 @@ namespace scene {
 
 		// 被技能击碎全部，从参数位置开始
 		public breakAll(collumn: number, row: number) {
+			this.setStarBar(2)
+			this.score = 775
 			let count: number = 0
-			const game: Array<Array<com.ComGrid | any>> = this.game
-
+			const game: (com.ComGrid | number)[][] = this.game
 			for (let y: number = 0; y < game.length; y++) {
 				if (y === 0) breakRow(row)
 				else {
@@ -469,14 +514,21 @@ namespace scene {
 			function breakRow(row: number) {
 				count++
 				for (let c: number = 0; c < game.length; c++) {
+					const grid: com.ComGrid = <com.ComGrid>game[c][row]
 					egret.setTimeout(() => {
-						const goalIndex = GameMgr.gameScene.checkGoals(game[c][row].jewelIndex)
-						if (goalIndex !== 0 && !goalIndex) {
-							game[c][row].hit()
+						if (!grid) return
+						const goalIndex = GameMgr.gameScene.checkGoals(grid.jewelIndex)
+						if (goalIndex !== 0 && !goalIndex) { // 不是目标宝石
+							grid.hit()
+							GameMgr.gameScene.score += 50
+							GameMgr.gameScene.ui_score_label.text = `${GameMgr.gameScene.score}`
 						} else {
-							GameMgr.gameScene.moveGridToGoal(game[c][row], goalIndex)
+							GameMgr.gameScene.moveGridToGoal(grid, goalIndex)
 						}
-						if (count - game.length - 1 === 0) {
+						// 全部都清除的时候
+						if (++count - GameMgr.gameScene.gameSize * GameMgr.gameScene.gameSize === GameMgr.gameScene.gameSize - 1) {
+							GameMgr.gameScene.goal0_done.visible = true
+							GameMgr.gameScene.goal0_value.visible = false
 							GameMgr.gameScene.bonus()
 						}
 					}, this, count * 100)
@@ -485,8 +537,87 @@ namespace scene {
 
 		}
 
-		public bonus() {
-			
+		public bonus(clearAll: boolean = false) {
+			if (clearAll) {
+				this.game.forEach(collumn => {
+					collumn.forEach(grid => {
+						if (grid) {
+							grid.close()
+						}
+					})
+				})
+			}
+			this.game = []
+			const bonus = []
+			for (let i = 0; i < gConst.bonus.length; i++) {
+				bonus.push([])
+				for (let j = 0; j < gConst.bonus[i].length; j++) {
+					bonus[i].push(gConst.bonus[i][j])
+				}
+			}
+
+			this.initGame(this.game, bonus)
+			egret.setTimeout(() => {
+				this.hitRocket(this.game)
+			}, this, 500)
+		}
+
+		private hitRocket(game: Array<Array<com.ComGrid | any>>) {
+			const shootDelay = 1000
+			for (let collumn: number = 0; collumn < game.length; collumn++) {
+				for (let row: number = 0; row < game[collumn].length; row++) {
+					const rocketDir: number | string = game[collumn][row].jewelIndex
+					if (typeof rocketDir === 'string') {
+						const rocket: com.ComGrid = game[collumn][row]
+						let smoke: com.ComParticle = new com.ComParticle()
+						smoke.setData(rocket, 'smoke')
+						if (rocketDir === 'y0') {
+							rocket.rotation = -90
+						}
+						if (rocketDir === 'y1') {
+							rocket.rotation = 90
+						}
+						if (rocketDir === 'x1') {
+							rocket.rotation = 180
+						}
+						smoke.start()
+						egret.setTimeout(() => {
+							smoke.stop()
+						}, this, shootDelay + 800)
+						egret.setTimeout(() => {
+							if (rocketDir === 'y0') {
+								gTween.toMoveY(rocket, 2 * this.height, 800)
+							} else if (rocketDir === 'y1') {
+								gTween.toMoveY(rocket, -2 * this.height, 800)
+							} else if (rocketDir === 'x0') {
+								gTween.toMoveX(rocket, -2 * this.width, 800)
+							} else if (rocketDir === 'x1') {
+								gTween.toMoveX(rocket, 2 * this.width, 800)
+							}
+						}, this, shootDelay)
+					} else {
+						egret.setTimeout(() => {
+							const grid: com.ComGrid = game[collumn][row]
+							const goalIndex = this.checkGoals(grid.jewelIndex)
+							if (goalIndex !== 0 || !goalIndex) {
+								grid.hit()
+								this.score += 50
+								console.log('rocket', this.score);
+								this.ui_score_label.text = `${this.score}`
+							} else {
+								this.moveGridToGoal(grid, goalIndex)
+							}
+						}, this, 800)
+					}
+
+				}
+			}
+			if (this.needUpdate) {
+				egret.setTimeout(() => {
+					this.currentLevelIndex++
+					this.loadGame()
+				}, this, shootDelay + 500)
+			}
 		}
 
 		/**
@@ -499,42 +630,115 @@ namespace scene {
 			const moveTime = 400
 
 			const hitTarget: com.ComGrid = game[gridCollumn][gridRow]
+			gridToBreak.forEach((grid, i) => {
+				if (grid.POS.collumn === gridCollumn && grid.POS.row === gridRow) {
 
-			switch (propName) {
-				case 'STAR':
-					gridToBreak.forEach((grid, i) => {
-						if (grid.POS.collumn === gridCollumn && grid.POS.row === gridRow) {
-
-							egret.setTimeout(() => {
-								if (grid.skill) {
-									grid.upgradeSkill('STAR')
-
-								} else {
-									grid.setSkill()
-								}
-							}, this, 200)
+					egret.setTimeout(() => {
+						// 已经变成功能方块
+						if (grid.skill) {
+							grid.upgradeSkill(propName)
+							if (propName === 'BOMB') {
+								this.bigRocketShoot(grid.POS)
+							}
 						} else {
-							gTween.toMove(grid, targetXY.x, targetXY.y, { x: moveTime, y: moveTime }, void 0, void 0, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
-								callback: () => {
-									grid.hit(false)
-									if (i === gridToBreak.length - 1) this.updateGrid(game)
-								}
-							})
-							game[grid.POS.collumn][grid.POS.row] = 0
+							// 还未变成功能方块
+							grid.setSkill()
+						}
+					}, this, 400)
+
+				} else {
+					const goalIndex = this.checkGoals(grid.jewelIndex)
+					if (goalIndex === 0 || goalIndex) {
+						this.goals[goalIndex].value--
+						this['goal' + goalIndex + '_value'].text = `${this.goals[goalIndex].value}`
+					}
+					// 飞向合体
+					gTween.toMove(grid, targetXY.x, targetXY.y, { x: moveTime, y: moveTime }, void 0, void 0, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
+						callback: () => {
+							grid.hit(false)
+							game[toBreak[i].x][toBreak[i].y] = 0
+							if (i === 1) {
+								if (!grid.skill) this.updateGrid(game) // 最后一个
+							}
 						}
 					})
-					break;
-				case 'BOMB':
+				}
+			})
+		}
 
-					break;
-				case 'ROCKET':
+		private bigRocketShoot(POS: { collumn: number, row: number }) {
+			const targetXY = this.getXY(POS.collumn, POS.row)
+			let mc: com.ComMovieClip = new com.ComMovieClip()
+			mc.open()
+			mc.setData([new data.McData('rocket', 31, 'p_rocket_{1}_png')])
+			this.main_grid.addChild(mc)
+			mc.anchorOffsetX = 166
+			mc.anchorOffsetY = 160
+			mc.x = targetXY.x
+			mc.y = targetXY.y
+			mc.scaleX = mc.scaleY = 3
+			mc.gotoAndPlay('rocket', 1)
 
-					break;
-				default:
-					break;
-			}
+			let gridToBreak: { x: number, y: number }[] = []
+			this.needUpdate = false
+			egret.setTimeout(() => {
+
+				for (let c: number = 0; c < this.gameSize; c++) {
+					for (let i: number = 0; i < 2; i++) {
+						if (i === 0) {
+							if (POS.collumn + c < this.gameSize) gridToBreak.push({ x: POS.collumn + c, y: POS.row })
+							if (POS.collumn - c >= 0) gridToBreak.push({ x: POS.collumn - c, y: POS.row })
+						} else {
+							if (POS.collumn + c < this.gameSize && POS.row + i < this.gameSize) gridToBreak.push({ x: POS.collumn + c, y: POS.row + i })
+							if (POS.collumn - c >= 0 && POS.row + i < this.gameSize) gridToBreak.push({ x: POS.collumn - c, y: POS.row + i })
+							if (POS.collumn - c >= 0 && POS.row - i >= 0 && this.game[POS.collumn - c][POS.row - i] !== 0) gridToBreak.push({ x: POS.collumn - c, y: POS.row - i })
+							if (POS.collumn + c < this.gameSize && POS.row - i >= 0 && this.game[POS.collumn + c][POS.row - i] !== 0) gridToBreak.push({ x: POS.collumn + c, y: POS.row - i })
+						}
+					}
+				}
 
 
+				this.gridBreak(this.game, gridToBreak)
+
+			}, this, 500)
+			egret.setTimeout(() => {
+				let gridToBreak2: { x: number, y: number }[] = []
+				for (let r: number = 0; r < this.gameSize; r++) {
+					for (let i: number = 0; i < 2; i++) {
+						if (i === 0) {
+							if (POS.row + r < this.gameSize) gridToBreak2.push({ x: POS.collumn, y: POS.row + r })
+							if (POS.row - r >= 0) gridToBreak2.push({ x: POS.collumn, y: POS.row - r })
+						} else {
+							if (POS.row + r < this.gameSize && POS.collumn + i < this.gameSize) gridToBreak2.push({ x: POS.collumn + i, y: POS.row + r })
+							if (POS.row - r >= 0 && POS.collumn + i < this.gameSize) gridToBreak2.push({ x: POS.collumn + i, y: POS.row - r })
+							if (POS.row - r >= 0 && POS.collumn - i >= 0) gridToBreak2.push({ x: POS.collumn - i, y: POS.row - r })
+							if (POS.row + r < this.gameSize && POS.collumn - i >= 0) gridToBreak2.push({ x: POS.collumn - i, y: POS.row + r })
+						}
+					}
+				}
+
+				this.needUpdate = false
+				this.gridBreak(this.game, gridToBreak2)
+			}, this, 1000)
+			egret.setTimeout(() => {
+				this.goal0_value.visible = false
+				this.goal1_value.visible = false
+				this.goal2_value.visible = false
+				this.goal0_done.visible = true
+				this.goal1_done.visible = true
+				this.goal2_done.visible = true
+				gTween.toHeight(this.star_bar_mask, this.star_bar_full.height, 300, void 0, void 0, void 0, {
+					callback: () => {
+						this.ui_star3.source = 'p_star_g_png'
+					}
+				})
+				gComMgr.rmObj(mc)
+				this.bonus(true)
+			}, this, 2000)
+			egret.setTimeout(() => {
+				this.closeFirst()
+				this.openEnd()
+			}, this, 4500)
 		}
 
         /**
@@ -554,10 +758,13 @@ namespace scene {
          * @param {Array} game 当前的游戏方块矩阵
         */
 		private updateGrid(game): void {
+
 			for (let collumn: number = 0; collumn < game.length; collumn++) {
 				let row: number = 0
 				let toFillIndex: number[] = [] // 需要填充的索引
 				let moveGridDelay: number = 0 // 跌落延迟，造成错落效果
+
+				// 寻找空缺位置
 				while (row < game[collumn].length) {
 					if (game[collumn][row] !== 0) { // 当前位置有方块
 						if (toFillIndex.length > 0) {
@@ -574,9 +781,12 @@ namespace scene {
 					}
 					row++
 				}
+
+				// 补充空缺位置
 				for (let fillRow: number = 0; fillRow < toFillIndex.length; fillRow++) {
 					const newGrid: com.ComGrid = new com.ComGrid()
-					newGrid.open(this.grid[collumn][fillRow])
+
+					newGrid.open(this.grid[collumn].shift())
 					newGrid.x = this.getX(collumn)
 					newGrid.y = this.getY(fillRow + this.gameSize)//从上面掉下来
 					this.main_grid.addChild(newGrid)

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.UiEnd" width="750" height="1334" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:com="com.*">
+    <e:Image id="bg" source="p_bg_png" horizontalCenter="0" verticalCenter="0" />
+    <e:Image id="leaves1" source="p_leaves_png" bottom="0" horizontalCenter="0" />
+    <e:Image id="leaves2" source="p_end_leaves_png" horizontalCenter="0" top="0" />
+    <e:Image id="star0" source="p_end_star_png" y="133.33" horizontalCenter="0"  visible="false"/>
+    <e:Image id="star1" source="p_end_star_png" anchorOffsetX="115.5" anchorOffsetY="111" rotation="335.87"
+             horizontalCenter="-163" top="136"  visible="false"/>
+    <e:Image id="star2" source="p_end_star_png" anchorOffsetX="115.5" anchorOffsetY="111" rotation="25.61" top="136"
+             horizontalCenter="163"  visible="false"/>
+    <e:Group id="btnCon" anchorOffsetX="0" width="622" anchorOffsetY="0" height="238" x="64" bottom="139">
+        <e:Image id="btn" source="p_download_png" rotation="360" anchorOffsetX="210" anchorOffsetY="60" x="311" y="119" />
+    </e:Group>
+    <e:BitmapLabel id="score" height="87" y="398" horizontalCenter="0" font="p_score_fnt" text="1675" />
+	<com:ComMovieClip id="logo" width="1000" height="1000" anchorOffsetX="500" anchorOffsetY="500" horizontalCenter="0" verticalCenter="0"/>
+</e:Skin>
