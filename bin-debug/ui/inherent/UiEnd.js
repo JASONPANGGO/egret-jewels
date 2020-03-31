@@ -50,20 +50,31 @@ var ui;
         /** 注册事件 */
         UiEnd.prototype.addEvent = function () {
             // console.info("addEvent");
+            this.btn.addEventListener(egret.TouchEvent.TOUCH_TAP, this.clickInstall, this);
         };
         /** 移除事件 */
         UiEnd.prototype.removeEvent = function () {
             // console.info("removeEvent");
+            this.btn.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.clickInstall, this);
         };
         /** 窗口大小改变时调用 */
         UiEnd.prototype.resizeView = function () {
             // console.info("resizeView", this.width, this.height);
-            // var s1: number = this.width / this.con.width;
-            // var s2: number = this.height / this.con.height;
-            // this.con.scaleX = this.con.scaleY = Math.max(s1, s2);
             this.bg.scaleX = this.bg.scaleY = Math.max(this.width / this.bg.width, this.height / this.bg.height);
+            var baseScale = gConst.mobileByScale[GameMgr.screenType][GameMgr.mobileType];
             if (this.screenType == 1 /* VERTICAL */) {
                 //竖屏
+                this.leaves2.rotation = 0;
+                this.leaves2.top = 0;
+                this.leaves1.rotation = 0;
+                this.leaves1.bottom = 0;
+                this.logo.verticalCenter = this.logo.horizontalCenter = 0;
+                this.btnCon.bottom = 0.08 * this.height;
+                this.btnCon.horizontalCenter = 0;
+                this.btnCon.verticalCenter = NaN;
+                this.score_con.verticalCenter = NaN;
+                this.score_con.horizontalCenter = 0;
+                this.score_con.top = 0.08 * this.height;
                 switch (this.mobileType) {
                     //iPhoneX或以上
                     case 1 /* IPHONE_X */:
@@ -78,6 +89,16 @@ var ui;
             }
             else {
                 //横屏
+                this.leaves2.rotation = -90;
+                this.leaves2.left = 0;
+                this.leaves1.rotation = -90;
+                this.leaves1.right = 0;
+                this.logo.verticalCenter = -100;
+                this.btnCon.verticalCenter = 200;
+                this.btnCon.horizontalCenter = this.logo.horizontalCenter = 0.25 * this.width;
+                this.btnCon.bottom = NaN;
+                this.score_con.horizontalCenter = NaN;
+                this.score_con.verticalCenter = 0;
                 switch (this.mobileType) {
                     //iPhoneX或以上
                     case 1 /* IPHONE_X */:
@@ -90,6 +111,7 @@ var ui;
                         break;
                 }
             }
+            this.score_con.scaleX = this.score_con.scaleY = this.logo.scaleX = this.logo.scaleY = baseScale;
         };
         /** 屏幕横竖屏转换时调用 */
         UiEnd.prototype.rotateView = function () {
@@ -104,8 +126,9 @@ var ui;
         UiEnd.prototype.enter = function () {
             var _loop_1 = function (i) {
                 egret.setTimeout(function () {
-                    gTween.toBigShow(this['star' + i], 300, void 0, void 0, egret.Ease.backOut);
-                }, this_1, i * 400);
+                    gSoundMgr.playEff('sm_endstar');
+                    gTween.toBigShow(this['star' + i], 400, void 0, void 0, egret.Ease.backOut);
+                }, this_1, i * 500);
             };
             var this_1 = this;
             for (var i = 0; i < 3; i++) {
@@ -115,6 +138,7 @@ var ui;
             this.logo.open();
             this.logo.setData([new data.McData('logo', 12, 'p_logo_{1}_png')]);
             this.logo.gotoAndPlay('logo', 1);
+            gSoundMgr.playEff('sm_score');
             gTween.loopScale(this.btn, 1.2, 400);
         };
         return UiEnd;

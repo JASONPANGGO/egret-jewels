@@ -1,0 +1,92 @@
+{
+    "fallbackLocale": "en",
+    "languages": {
+        "zh-cn": {
+            "download": {
+                "value": "下载游戏",
+                "style": {
+                    "fontSize": 64,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#700000"
+                }
+            },
+            "tapToJump": {
+                "value": "点击跳跃",
+                "style": {
+                    "fontSize": 60,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#371712"
+                }
+            },
+            "tapToShoot": {
+                "value": "点击射击",
+                "style": {
+                    "fontSize": 60,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#371712"
+                }
+            }
+        },
+        "en": {
+            "download": {
+                "value": "DOWNLOAD",
+                "style": {
+                    "fontSize": 64,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#700000"
+                }
+            },
+            "tapToJump": {
+                "value": "TAP TO JUMP",
+                "style": {
+                    "fontSize": 60,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#371712"
+                }
+            },
+            "tapToShoot": {
+                "value": "TAP TO SHOOT",
+                "style": {
+                    "fontSize": 60,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#371712"
+                }
+            }
+        },
+        "ja": {
+            "download": {
+                "value": "ダウンロード",
+                "style": {
+                    "fontSize": 64,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#700000"
+                }
+            },
+            "tapToJump": {
+                "value": "タップしてジャンプする",
+                "style": {
+                    "fontSize": 60,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#371712"
+                }
+            },
+            "tapToShoot": {
+                "value": "タップして撃つ",
+                "style": {
+                    "fontSize": 60,
+                    "color": "#ffffff",
+                    "stroke": 4,
+                    "strokeColor": "#371712"
+                }
+            }
+        }
+    }
+}

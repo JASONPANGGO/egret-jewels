@@ -15,10 +15,12 @@ var scene;
         __extends(GameScene, _super);
         function GameScene() {
             var _this = _super.call(this) || this;
+            _this.guideIndex = 0;
             _this.steps = 24;
             _this.currentLevelIndex = 1;
             _this.goals = [];
             _this.score = 0;
+            _this.tapAvailable = true; // 当前状态是否可点击
             _this.game = [];
             _this.gameSize = 7;
             _this.needUpdate = true;
@@ -135,6 +137,47 @@ var scene;
             else {
             }
         };
+        /** 显示引导 */
+        GameScene.prototype.showGuide = function () {
+            if (GameMgr.isEnd) {
+                return;
+            }
+            if (this.showGuided) {
+                return;
+            }
+            this.showGuided = true;
+            if (this.guide) {
+                this.guide.over();
+                gComMgr.rmObj(this.guide);
+            }
+            if (!this.guide) {
+                this.guide = new com.ComGuide();
+                this.guide.open();
+            }
+            // const time: number = this.firstTouch ? gConst.firstGuideTimer : gConst.afterGuideTimer;
+            this.guideTarget = gConst.guideSteps[this.guideIndex];
+            var time = 500;
+            if (this.guideIndex === 0)
+                time = 800;
+            this.guide.setData(time, { target1: this.game[this.guideTarget.grid.x][this.guideTarget.grid.y] }, this, {
+                diffY: 30,
+                pressT: 300,
+                liftT: 200
+            });
+            this.guide.play();
+        };
+        /** 隐藏引导 */
+        GameScene.prototype.hideGuide = function () {
+            this.firstTouch = false;
+            if (!this.guide) {
+                return;
+            }
+            if (!this.showGuided) {
+                return;
+            }
+            this.showGuided = false;
+            this.guide.over();
+        };
         /* =========== 框架结构代码-end =========== */
         /* =========== 业务代码-start =========== */
         GameScene.prototype.openStart = function () {
@@ -146,6 +189,8 @@ var scene;
             this.initGame(this.game, gConst['game' + this.currentLevelIndex]);
             this.initUI(this.currentLevelIndex);
             this.setSteps(this.steps);
+            this.guideTarget = gConst.guideSteps[this.guideIndex];
+            this.showGuide();
         };
         GameScene.prototype.initUI = function (levelIndex) {
             this.goals = gConst['goals' + this.currentLevelIndex];
@@ -159,16 +204,35 @@ var scene;
             this.ui_score_label.text = "" + this.score;
         };
         GameScene.prototype.onTap = function (evt) {
-            var gridPos = evt.currentTarget.POS;
-            var gridProp = evt.currentTarget.propName;
+            if (!this.tapAvailable)
+                return;
             if (this.gridToMoveNum > 0)
                 return; // 方块还在移动的时候不可操作
+            var gridPos = evt.currentTarget.POS;
+            var gridProp = evt.currentTarget.propName;
+            if (!this.checkCondition({ x: gridPos.collumn, y: gridPos.row }))
+                return;
             if (this.useSteps()) {
-                this.hitGrid(gridPos.collumn, gridPos.row, gridProp);
+                // this.hitGrid(gridPos.collumn, gridPos.row, gridProp)
+                this.hitGrid(this.guideTarget.grid.x, this.guideTarget.grid.y, gridProp);
             }
             else {
                 console.log('步数用完');
             }
+            this.guideIndex++;
+            this.hideGuide();
+        };
+        GameScene.prototype.checkCondition = function (POS) {
+            var grid = this.game[POS.x][POS.y];
+            var condition = this.guideTarget.condition;
+            for (var _i = 0, condition_1 = condition; _i < condition_1.length; _i++) {
+                var i = condition_1[_i];
+                if (i.jewelIndex && grid.jewelIndex === i.jewelIndex)
+                    return true;
+                if (i.x === POS.x && i.y === POS.y)
+                    return true;
+            }
+            return false;
         };
         GameScene.prototype.useSteps = function () {
             if (this.steps > 0) {
@@ -210,7 +274,6 @@ var scene;
         };
         // 初始化游戏方格矩阵
         GameScene.prototype.initGame = function (game, gameGrid) {
-            console.log(game, gameGrid);
             this.grid = gameGrid;
             for (var collumn = 0; collumn < this.gameSize; collumn++) {
                 game.push([]);
@@ -223,7 +286,7 @@ var scene;
                     this.main_grid.addChild(comGrid);
                     comGrid.visible = false;
                     comGrid.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
-                    this.moveGrid(comGrid, { collumn: collumn, row: this.gameSize }, { collumn: collumn, row: row }, 100 * row); // 初始化跌落效果
+                    this.moveGrid(comGrid, { collumn: collumn, row: this.gameSize }, { collumn: collumn, row: row }, 100 * row, true); // 初始化跌落效果
                 }
             }
             this.game = game;
@@ -330,9 +393,12 @@ var scene;
          */
         GameScene.prototype.hitGrid = function (gridCollumn, gridRow, propName) {
             var toBreak = this.find(this.game, gridCollumn, gridRow);
+            if (toBreak.length > 1) {
+                this.tapAvailable = false;
+            }
             if (gridCollumn === 6 && gridRow === 0) {
                 this.setStarBar(1);
-                this.score += 200;
+                gSoundMgr.playEff('sm_star_rating1');
             }
             switch (propName) {
                 case 'STAR':
@@ -367,7 +433,6 @@ var scene;
                     if (goalIndex !== 0 && !goalIndex) {
                         grid.hit();
                         _this.score += 50;
-                        console.log('gridBreak', _this.score);
                         _this.ui_score_label.text = "" + _this.score;
                     }
                     else {
@@ -381,6 +446,10 @@ var scene;
         };
         GameScene.prototype.moveGridToGoal = function (grid, goalIndex) {
             var _this = this;
+            if (grid.skill) {
+                grid.hit();
+                return;
+            }
             var moveTime = 800;
             var gp = gComMgr.toGlobal(grid);
             var goal_gp = gComMgr.toGlobal(this['goal' + goalIndex]);
@@ -393,9 +462,14 @@ var scene;
                     grid.close();
                     _this.goals[goalIndex].value--;
                     var value = _this.goals[goalIndex].value;
-                    _this['goal' + goalIndex + '_value'].text = "" + value;
+                    if (value <= 0) {
+                        _this['goal' + goalIndex + '_value'].visible = false;
+                        _this['goal' + goalIndex + '_done'].visible = true;
+                    }
+                    else {
+                        _this['goal' + goalIndex + '_value'].text = "" + value;
+                    }
                     _this.score += 50;
-                    console.log('move', _this.score);
                     _this.ui_score_label.text = "" + _this.score;
                 }
             });
@@ -411,7 +485,7 @@ var scene;
         // 被技能击碎全部，从参数位置开始
         GameScene.prototype.breakAll = function (collumn, row) {
             this.setStarBar(2);
-            this.score = 775;
+            gSoundMgr.playEff('sm_star_rating2');
             var count = 0;
             var game = this.game;
             for (var y = 0; y < game.length; y++) {
@@ -426,6 +500,7 @@ var scene;
                     }
                 }
             }
+            gSoundMgr.playEff('sm_break_all');
             function breakRow(row) {
                 count++;
                 var _loop_2 = function (c) {
@@ -448,7 +523,7 @@ var scene;
                             GameMgr.gameScene.goal0_value.visible = false;
                             GameMgr.gameScene.bonus();
                         }
-                    }, this_2, count * 100);
+                    }, this_2, count * 70);
                 };
                 var this_2 = this;
                 for (var c = 0; c < game.length; c++) {
@@ -470,10 +545,25 @@ var scene;
             }
             this.game = [];
             var bonus = [];
-            for (var i = 0; i < gConst.bonus.length; i++) {
+            // for (let i = 0; i < gConst.bonus.length; i++) {
+            // 	bonus.push([])
+            // 	for (let j = 0; j < gConst.bonus[i].length; j++) {
+            // 		bonus[i].push(gConst.bonus[i][j])
+            // 	}
+            // }
+            var rocketMaxNum = 20;
+            var rocketType = ['x0', 'x1', 'y0', 'y1'];
+            for (var c = 0; c < this.gameSize; c++) {
                 bonus.push([]);
-                for (var j = 0; j < gConst.bonus[i].length; j++) {
-                    bonus[i].push(gConst.bonus[i][j]);
+                for (var r = 0; r < this.gameSize; r++) {
+                    var jewelIndex = void 0;
+                    if (Math.random() > 0.5 && rocketMaxNum-- > 0) {
+                        jewelIndex = rocketType[Math.floor(Math.random() * 4)];
+                    }
+                    else {
+                        jewelIndex = Math.ceil(Math.random() * 6);
+                    }
+                    bonus[c].push(jewelIndex);
                 }
             }
             this.initGame(this.game, bonus);
@@ -483,7 +573,8 @@ var scene;
         };
         GameScene.prototype.hitRocket = function (game) {
             var _this = this;
-            var shootDelay = 1000;
+            var shootDelay = 800;
+            this.showGuided = true;
             var _loop_3 = function (collumn) {
                 var _loop_4 = function (row) {
                     var rocketDir = game[collumn][row].jewelIndex;
@@ -517,7 +608,7 @@ var scene;
                             else if (rocketDir === 'x1') {
                                 gTween.toMoveX(rocket_1, 2 * _this.width, 800);
                             }
-                        }, this_3, shootDelay);
+                        }, this_3, shootDelay + Math.random() * 600);
                     }
                     else {
                         egret.setTimeout(function () {
@@ -526,7 +617,6 @@ var scene;
                             if (goalIndex !== 0 || !goalIndex) {
                                 grid.hit();
                                 _this.score += 50;
-                                console.log('rocket', _this.score);
                                 _this.ui_score_label.text = "" + _this.score;
                             }
                             else {
@@ -547,6 +637,8 @@ var scene;
                 egret.setTimeout(function () {
                     _this.currentLevelIndex++;
                     _this.loadGame();
+                    _this.hideGuide();
+                    _this.showGuided = false;
                 }, this, shootDelay + 500);
             }
         };
@@ -568,11 +660,19 @@ var scene;
                             grid.upgradeSkill(propName);
                             if (propName === 'BOMB') {
                                 _this.bigRocketShoot(grid.POS);
+                                gSoundMgr.playEff('sm_effect_1');
+                            }
+                            else {
+                                // 星星合成
+                                gSoundMgr.playEff('sm_effect_2');
                             }
                         }
                         else {
                             // 还未变成功能方块
                             grid.setSkill();
+                            gSoundMgr.playEff('sm_star');
+                            _this.score += 50;
+                            _this.ui_score_label.text = "" + _this.score;
                         }
                     }, _this, 400);
                 }
@@ -585,12 +685,15 @@ var scene;
                     // 飞向合体
                     gTween.toMove(grid, targetXY.x, targetXY.y, { x: moveTime, y: moveTime }, void 0, void 0, { x: egret.Ease.backIn, y: egret.Ease.backIn }, void 0, {
                         callback: function () {
+                            grid.visible = false;
                             grid.hit(false);
                             game[toBreak[i].x][toBreak[i].y] = 0;
                             if (i === 1) {
                                 if (!grid.skill)
                                     _this.updateGrid(game); // 最后一个
                             }
+                            _this.score += 50;
+                            _this.ui_score_label.text = "" + _this.score;
                         }
                     });
                 }
@@ -609,6 +712,7 @@ var scene;
             mc.y = targetXY.y;
             mc.scaleX = mc.scaleY = 3;
             mc.gotoAndPlay('rocket', 1);
+            gSoundMgr.playEff('sm_rocket');
             var gridToBreak = [];
             this.needUpdate = false;
             egret.setTimeout(function () {
@@ -633,6 +737,7 @@ var scene;
                     }
                 }
                 _this.gridBreak(_this.game, gridToBreak);
+                gSoundMgr.playEff('sm_break_all');
             }, this, 500);
             egret.setTimeout(function () {
                 var gridToBreak2 = [];
@@ -658,6 +763,7 @@ var scene;
                 }
                 _this.needUpdate = false;
                 _this.gridBreak(_this.game, gridToBreak2);
+                gSoundMgr.playEff('sm_break_all');
             }, this, 1000);
             egret.setTimeout(function () {
                 _this.goal0_value.visible = false;
@@ -671,6 +777,7 @@ var scene;
                         _this.ui_star3.source = 'p_star_g_png';
                     }
                 });
+                gSoundMgr.playEff('sm_star_rating3');
                 gComMgr.rmObj(mc);
                 _this.bonus(true);
             }, this, 2000);
@@ -743,8 +850,11 @@ var scene;
          * @param {Object} from 移动起始点
          * @param {Object} to 移动终点
         */
-        GameScene.prototype.moveGrid = function (grid, from, to, delay) {
+        GameScene.prototype.moveGrid = function (grid, from, to, delay, init) {
             var _this = this;
+            if (init === void 0) { init = false; }
+            this.main_grid.mask = this.main_grid_mask;
+            this.main_grid_mask.visible = true;
             var perMoveTime = 400; // 移动单个方格所需时间
             this.gridToMoveNum++;
             egret.setTimeout(function () {
@@ -756,7 +866,7 @@ var scene;
                             _this.finishMove();
                     }
                 });
-                if (from.row > _this.gameSize - 1) {
+                if (init) {
                     grid.alpha = 0;
                     egret.Tween.get(grid).to({
                         alpha: 1
@@ -766,6 +876,10 @@ var scene;
         };
         // 完成单次操作之后会调用此函数
         GameScene.prototype.finishMove = function () {
+            this.tapAvailable = true;
+            this.showGuide();
+            this.main_grid.mask = null;
+            this.main_grid_mask.visible = false;
         };
         return GameScene;
     }(scene.GameBase));

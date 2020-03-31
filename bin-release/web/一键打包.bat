@@ -13,8 +13,8 @@ set release_path=%cd%
 
 ::复制原文件夹，重命名新文件夹
 rd /q /s %pack_name%
-echo d | xcopy /e 1 1-复制
-rename 1-复制 %pack_name%
+echo d | xcopy /e 1 1-copy
+rename 1-copy %pack_name%
 
 cd %pack_name%
 rename index.html %pack_name%.html
@@ -22,6 +22,7 @@ rename index.html %pack_name%.html
 cd ..\
 ::删除原压缩包，创建压缩包
 del %pack_name%.zip
-::"C:\Program Files\Bandizip\Bandizip.exe" a "%pack_name%.zip" "%pack_name%"
-rar a -r -ep1 "%pack_name%.zip" "%pack_name%"
+::目前 WinRAR 打包，仓库自我提测上传入口不支持，使用 Bandizip 压缩
+::rar a -r -ep1 "%pack_name%.zip" "%pack_name%"
+"C:\Program Files\Bandizip\Bandizip.exe" a "%pack_name%.zip" "%pack_name%"
 ::把压缩包复制到根目录下

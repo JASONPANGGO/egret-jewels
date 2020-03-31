@@ -267,4 +267,35 @@ namespace gConst {
 		[1, 'y1', 'y0', 'x0', 3, 'x0', 'x0'],
 	]
 
+
+	export const guideSteps = [
+		{
+			condition: [{ jewelIndex: 1 }],
+			grid: { x: 6, y: 0 }
+		},
+		{
+			condition: [{ jewelIndex: 2 }],
+			grid: { x: 5, y: 0 }
+		},
+		{
+			condition: [{ x: 5, y: 0 }],
+			grid: { x: 5, y: 0 }
+		},
+		{
+			condition: [{ x: 1, y: 2 }, { x: 1, y: 1 }, { x: 2, y: 2 }],
+			grid: { x: 2, y: 1 }
+		},
+		{
+			condition: [{ jewelIndex: 3 }],
+			grid: { x: 2, y: 1 }
+		},
+		{
+			condition: [{ x: 0, y: 2 }, { x: 0, y: 1 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }],
+			grid: { x: 2, y: 0 }
+		},
+		{
+			condition: [{ x: 2, y: 1 }],
+			grid: { x: 2, y: 1 }
+		}
+	]
 }

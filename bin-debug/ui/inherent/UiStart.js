@@ -116,6 +116,7 @@ var ui;
         // 引导手击中方块
         UiStart.prototype.guideHit = function () {
             this.hitGrid(this.guideGrid.collumn, this.guideGrid.row);
+            gSoundMgr.playEff('sm_break_crown');
         };
         UiStart.prototype.enter = function () {
             var _this = this;
@@ -367,24 +368,37 @@ var ui;
                 return;
             }
             this.showGuided = true;
-            if (!this.guide) {
-                this.guide = new com.ComGuide();
-                this.guide.open();
-            }
+            // if (!this.guide) {
+            //     this.guide = new com.ComGuide();
+            //     this.guide.open();
+            // }
             var guidePoint = this.game[this.guideGrid.collumn][this.guideGrid.row];
             var guidePoint2 = this.game[this.guideGrid.collumn + 1][this.guideGrid.row + 1];
-            this.main_con.addChild(this.guide);
-            this.guide.x = guidePoint2.x;
-            this.guide.y = guidePoint2.y;
-            gTween.fadeIn(this.guide, 300, void 0, void 0, void 0, {
+            // this.main_con.addChild(this.guide)
+            // this.guide.x = guidePoint2.x
+            // this.guide.y = guidePoint2.y
+            var guide = new eui.Component();
+            guide.skinName = skins.ComGuide;
+            this.main_con.addChild(guide);
+            guide.x = guidePoint2.x;
+            guide.y = guidePoint2.y;
+            gTween.fadeIn(guide, 300, void 0, void 0, void 0, {
                 callback: function () {
-                    gTween.toMove(_this.guide, guidePoint.x, guidePoint.y, { x: 300, y: 300 }, void 0, void 0, void 0, void 0, {
+                    gTween.toMove(guide, guidePoint.x, guidePoint.y, { x: 300, y: 300 }, void 0, void 0, void 0, { duration: 200 }, {
                         callback: function () {
-                            gTween.toScale(_this.guide, 0.8, 200, 1, void 0, void 0, {
-                                callback: function () {
+                            egret.Tween.get(guide).to({
+                                y: guide.y - 20,
+                                scaleX: 0.9,
+                                scaleY: 0.9
+                            }, 150).call(function () {
+                                egret.Tween.get(guide).to({
+                                    y: guide.y + 20,
+                                    scaleX: 1,
+                                    scaleY: 1
+                                }, 150).call(function () {
+                                    gTween.fadeOut(guide);
                                     _this.guideHit();
-                                    gTween.fadeOut(_this.guide);
-                                }
+                                });
                             });
                         }
                     });

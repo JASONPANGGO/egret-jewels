@@ -1,0 +1,590 @@
+{
+	"groups": [
+		{
+			"keys": "p_ball_1_png,p_ball_10_png,p_ball_11_png,p_ball_12_png,p_ball_13_png,p_ball_14_png,p_ball_15_png,p_ball_16_png,p_ball_17_png,p_ball_18_png,p_ball_19_png,p_ball_2_png,p_ball_20_png,p_ball_3_png,p_ball_4_png,p_ball_5_png,p_ball_6_png,p_ball_7_png,p_ball_8_png,p_ball_9_png,p_logo_1_png,p_logo_10_png,p_logo_11_png,p_logo_12_png,p_logo_2_png,p_logo_3_png,p_logo_4_png,p_logo_5_png,p_logo_6_png,p_logo_7_png,p_logo_8_png,p_logo_9_png,p_rocket_1_png,p_rocket_10_png,p_rocket_11_png,p_rocket_12_png,p_rocket_13_png,p_rocket_14_png,p_rocket_15_png,p_rocket_16_png,p_rocket_17_png,p_rocket_18_png,p_rocket_19_png,p_rocket_2_png,p_rocket_20_png,p_rocket_21_png,p_rocket_22_png,p_rocket_23_png,p_rocket_24_png,p_rocket_25_png,p_rocket_26_png,p_rocket_27_png,p_rocket_28_png,p_rocket_29_png,p_rocket_3_png,p_rocket_30_png,p_rocket_31_png,p_rocket_4_png,p_rocket_5_png,p_rocket_6_png,p_rocket_7_png,p_rocket_8_png,p_rocket_9_png,p_arrow_png,p_balllight_png,p_balllight2_png,p_bg_png,p_board_png,p_bottom_png,p_bushu_title_png,p_done_png,p_eff_0_ball_png,p_eff_0_bomb_png,p_eff_1_ball_png,p_eff_2_ball_png,p_eff_bomb_png,p_eff_rocket_png,p_end_leaves_png,p_end_star_png,p_enter_png,p_full_png,p_g_bomb_png,p_g_rocket_png,p_g_star_png,p_goal_board_png,p_goal_png,p_guanqia_1_png,p_guanqia_2_png,p_hand_png,p_leaves_png,p_light_1_png,p_light_2_png,p_point_png,p_score_board_png,p_star_g_png,p_star_s_png,p_tutorial_board_png,p_bushu_fnt,p_bushu_png,p_goalnum_fnt,p_goalnum_png,p_score_fnt,p_score_png,p_download_png,p_logo_png,grid_json,grid1_png,grid2_png,grid3_png,grid4_png,grid5_png,grid6_png,smoke_json,smoke_png,gameConfig_json,languages_json",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"url": "assets/image/p_arrow.png",
+			"type": "image",
+			"name": "p_arrow_png"
+		},
+		{
+			"url": "assets/image/p_balllight.png",
+			"type": "image",
+			"name": "p_balllight_png"
+		},
+		{
+			"url": "assets/image/p_balllight2.png",
+			"type": "image",
+			"name": "p_balllight2_png"
+		},
+		{
+			"url": "assets/image/p_bg.png",
+			"type": "image",
+			"name": "p_bg_png"
+		},
+		{
+			"url": "assets/image/p_board.png",
+			"type": "image",
+			"name": "p_board_png"
+		},
+		{
+			"url": "assets/image/p_bottom.png",
+			"type": "image",
+			"name": "p_bottom_png"
+		},
+		{
+			"url": "assets/image/p_bushu_title.png",
+			"type": "image",
+			"name": "p_bushu_title_png"
+		},
+		{
+			"url": "assets/image/p_done.png",
+			"type": "image",
+			"name": "p_done_png"
+		},
+		{
+			"url": "assets/image/p_eff_0_ball.png",
+			"type": "image",
+			"name": "p_eff_0_ball_png"
+		},
+		{
+			"url": "assets/image/p_eff_0_bomb.png",
+			"type": "image",
+			"name": "p_eff_0_bomb_png"
+		},
+		{
+			"url": "assets/image/p_eff_1_ball.png",
+			"type": "image",
+			"name": "p_eff_1_ball_png"
+		},
+		{
+			"url": "assets/image/p_eff_2_ball.png",
+			"type": "image",
+			"name": "p_eff_2_ball_png"
+		},
+		{
+			"url": "assets/image/p_eff_bomb.png",
+			"type": "image",
+			"name": "p_eff_bomb_png"
+		},
+		{
+			"url": "assets/image/p_eff_rocket.png",
+			"type": "image",
+			"name": "p_eff_rocket_png"
+		},
+		{
+			"url": "assets/image/p_end_leaves.png",
+			"type": "image",
+			"name": "p_end_leaves_png"
+		},
+		{
+			"url": "assets/image/p_end_star.png",
+			"type": "image",
+			"name": "p_end_star_png"
+		},
+		{
+			"url": "assets/image/p_enter.png",
+			"type": "image",
+			"name": "p_enter_png"
+		},
+		{
+			"url": "assets/image/p_full.png",
+			"type": "image",
+			"name": "p_full_png"
+		},
+		{
+			"url": "assets/image/p_g_bomb.png",
+			"type": "image",
+			"name": "p_g_bomb_png"
+		},
+		{
+			"url": "assets/image/p_g_rocket.png",
+			"type": "image",
+			"name": "p_g_rocket_png"
+		},
+		{
+			"url": "assets/image/p_g_star.png",
+			"type": "image",
+			"name": "p_g_star_png"
+		},
+		{
+			"url": "assets/image/p_goal.png",
+			"type": "image",
+			"name": "p_goal_png"
+		},
+		{
+			"url": "assets/image/p_goal_board.png",
+			"type": "image",
+			"name": "p_goal_board_png"
+		},
+		{
+			"url": "assets/image/p_guanqia_1.png",
+			"type": "image",
+			"name": "p_guanqia_1_png"
+		},
+		{
+			"url": "assets/image/p_guanqia_2.png",
+			"type": "image",
+			"name": "p_guanqia_2_png"
+		},
+		{
+			"url": "assets/image/p_hand.png",
+			"type": "image",
+			"name": "p_hand_png"
+		},
+		{
+			"url": "assets/image/p_leaves.png",
+			"type": "image",
+			"name": "p_leaves_png"
+		},
+		{
+			"url": "assets/image/p_light_1.png",
+			"type": "image",
+			"name": "p_light_1_png"
+		},
+		{
+			"url": "assets/image/p_light_2.png",
+			"type": "image",
+			"name": "p_light_2_png"
+		},
+		{
+			"url": "assets/image/p_point.png",
+			"type": "image",
+			"name": "p_point_png"
+		},
+		{
+			"url": "assets/image/p_score_board.png",
+			"type": "image",
+			"name": "p_score_board_png"
+		},
+		{
+			"url": "assets/image/p_star_g.png",
+			"type": "image",
+			"name": "p_star_g_png"
+		},
+		{
+			"url": "assets/image/p_star_s.png",
+			"type": "image",
+			"name": "p_star_s_png"
+		},
+		{
+			"url": "assets/image/p_tutorial_board.png",
+			"type": "image",
+			"name": "p_tutorial_board_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_1.png",
+			"type": "image",
+			"name": "p_ball_1_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_10.png",
+			"type": "image",
+			"name": "p_ball_10_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_11.png",
+			"type": "image",
+			"name": "p_ball_11_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_12.png",
+			"type": "image",
+			"name": "p_ball_12_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_13.png",
+			"type": "image",
+			"name": "p_ball_13_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_14.png",
+			"type": "image",
+			"name": "p_ball_14_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_15.png",
+			"type": "image",
+			"name": "p_ball_15_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_16.png",
+			"type": "image",
+			"name": "p_ball_16_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_17.png",
+			"type": "image",
+			"name": "p_ball_17_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_18.png",
+			"type": "image",
+			"name": "p_ball_18_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_19.png",
+			"type": "image",
+			"name": "p_ball_19_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_2.png",
+			"type": "image",
+			"name": "p_ball_2_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_20.png",
+			"type": "image",
+			"name": "p_ball_20_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_3.png",
+			"type": "image",
+			"name": "p_ball_3_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_4.png",
+			"type": "image",
+			"name": "p_ball_4_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_5.png",
+			"type": "image",
+			"name": "p_ball_5_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_6.png",
+			"type": "image",
+			"name": "p_ball_6_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_7.png",
+			"type": "image",
+			"name": "p_ball_7_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_8.png",
+			"type": "image",
+			"name": "p_ball_8_png"
+		},
+		{
+			"url": "assets/image/movie/ball/p_ball_9.png",
+			"type": "image",
+			"name": "p_ball_9_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_1.png",
+			"type": "image",
+			"name": "p_logo_1_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_10.png",
+			"type": "image",
+			"name": "p_logo_10_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_11.png",
+			"type": "image",
+			"name": "p_logo_11_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_12.png",
+			"type": "image",
+			"name": "p_logo_12_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_2.png",
+			"type": "image",
+			"name": "p_logo_2_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_3.png",
+			"type": "image",
+			"name": "p_logo_3_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_4.png",
+			"type": "image",
+			"name": "p_logo_4_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_5.png",
+			"type": "image",
+			"name": "p_logo_5_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_6.png",
+			"type": "image",
+			"name": "p_logo_6_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_7.png",
+			"type": "image",
+			"name": "p_logo_7_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_8.png",
+			"type": "image",
+			"name": "p_logo_8_png"
+		},
+		{
+			"url": "assets/image/movie/logo/p_logo_9.png",
+			"type": "image",
+			"name": "p_logo_9_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_1.png",
+			"type": "image",
+			"name": "p_rocket_1_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_10.png",
+			"type": "image",
+			"name": "p_rocket_10_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_11.png",
+			"type": "image",
+			"name": "p_rocket_11_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_12.png",
+			"type": "image",
+			"name": "p_rocket_12_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_13.png",
+			"type": "image",
+			"name": "p_rocket_13_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_14.png",
+			"type": "image",
+			"name": "p_rocket_14_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_15.png",
+			"type": "image",
+			"name": "p_rocket_15_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_16.png",
+			"type": "image",
+			"name": "p_rocket_16_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_17.png",
+			"type": "image",
+			"name": "p_rocket_17_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_18.png",
+			"type": "image",
+			"name": "p_rocket_18_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_19.png",
+			"type": "image",
+			"name": "p_rocket_19_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_2.png",
+			"type": "image",
+			"name": "p_rocket_2_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_20.png",
+			"type": "image",
+			"name": "p_rocket_20_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_21.png",
+			"type": "image",
+			"name": "p_rocket_21_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_22.png",
+			"type": "image",
+			"name": "p_rocket_22_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_23.png",
+			"type": "image",
+			"name": "p_rocket_23_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_24.png",
+			"type": "image",
+			"name": "p_rocket_24_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_25.png",
+			"type": "image",
+			"name": "p_rocket_25_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_26.png",
+			"type": "image",
+			"name": "p_rocket_26_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_27.png",
+			"type": "image",
+			"name": "p_rocket_27_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_28.png",
+			"type": "image",
+			"name": "p_rocket_28_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_29.png",
+			"type": "image",
+			"name": "p_rocket_29_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_3.png",
+			"type": "image",
+			"name": "p_rocket_3_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_30.png",
+			"type": "image",
+			"name": "p_rocket_30_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_31.png",
+			"type": "image",
+			"name": "p_rocket_31_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_4.png",
+			"type": "image",
+			"name": "p_rocket_4_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_5.png",
+			"type": "image",
+			"name": "p_rocket_5_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_6.png",
+			"type": "image",
+			"name": "p_rocket_6_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_7.png",
+			"type": "image",
+			"name": "p_rocket_7_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_8.png",
+			"type": "image",
+			"name": "p_rocket_8_png"
+		},
+		{
+			"url": "assets/image/movie/rocket/p_rocket_9.png",
+			"type": "image",
+			"name": "p_rocket_9_png"
+		},
+		{
+			"url": "assets/image/preload/first/p_download.png",
+			"type": "image",
+			"name": "p_download_png"
+		},
+		{
+			"url": "assets/image/preload/first/p_logo.png",
+			"type": "image",
+			"name": "p_logo_png"
+		},
+		{
+			"url": "assets/image/preload/bitmapLabel/goalnum/p_goalnum.fnt",
+			"type": "font",
+			"name": "p_goalnum_fnt"
+		},
+		{
+			"url": "assets/image/preload/bitmapLabel/goalnum/p_goalnum.png",
+			"type": "image",
+			"name": "p_goalnum_png"
+		},
+		{
+			"url": "assets/image/preload/bitmapLabel/bushu/p_bushu.fnt",
+			"type": "font",
+			"name": "p_bushu_fnt"
+		},
+		{
+			"url": "assets/image/preload/bitmapLabel/bushu/p_bushu.png",
+			"type": "image",
+			"name": "p_bushu_png"
+		},
+		{
+			"url": "assets/image/preload/bitmapLabel/score/p_score.fnt",
+			"type": "font",
+			"name": "p_score_fnt"
+		},
+		{
+			"url": "assets/image/preload/bitmapLabel/score/p_score.png",
+			"type": "image",
+			"name": "p_score_png"
+		},
+		{
+			"url": "assets/image/preload/particle/grid/grid1.png",
+			"type": "image",
+			"name": "grid1_png"
+		},
+		{
+			"url": "assets/image/preload/particle/grid/grid2.png",
+			"type": "image",
+			"name": "grid2_png"
+		},
+		{
+			"url": "assets/image/preload/particle/grid/grid3.png",
+			"type": "image",
+			"name": "grid3_png"
+		},
+		{
+			"url": "assets/image/preload/particle/grid/grid4.png",
+			"type": "image",
+			"name": "grid4_png"
+		},
+		{
+			"url": "assets/image/preload/particle/grid/grid5.png",
+			"type": "image",
+			"name": "grid5_png"
+		},
+		{
+			"url": "assets/image/preload/particle/grid/grid6.png",
+			"type": "image",
+			"name": "grid6_png"
+		},
+		{
+			"url": "assets/image/preload/particle/smoke/smoke.png",
+			"type": "image",
+			"name": "smoke_png"
+		},
+		{
+			"url": "assets/image/preload/particle/smoke/smoke.json",
+			"type": "json",
+			"name": "smoke_json"
+		},
+		{
+			"url": "assets/image/preload/particle/grid/grid.json",
+			"type": "json",
+			"name": "grid_json"
+		},
+		{
+			"url": "config/gameConfig.json",
+			"type": "json",
+			"name": "gameConfig_json"
+		},
+		{
+			"url": "config/languages.json",
+			"type": "json",
+			"name": "languages_json"
+		}
+	]
+}

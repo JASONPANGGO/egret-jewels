@@ -1,0 +1,70 @@
+{
+    "autoEndTime": 0,
+    "playAgain": 20,
+    "gameConfig": {
+        "slider": {
+            "type": "slider",
+            "min": 0,
+            "max": 10,
+            "desc": "slider 提示信息",
+            "value": 4
+        },
+        "input": {
+            "type": "input:text",
+            "desc": "input:text 提示信息",
+            "value": "value"
+        },
+        "switch": {
+            "type": "switch",
+            "value": true,
+            "desc": "switch 提示信息"
+        },
+        "radio": {
+            "type": "radio",
+            "value": "a",
+            "options": [
+                "a",
+                "b",
+                "c",
+                "d"
+            ],
+            "desc": "radio 提示信息"
+        },
+        "checkbox": {
+            "type": "checkbox",
+            "value": [
+                "a",
+                "d"
+            ],
+            "options": [
+                "a",
+                "b",
+                "c",
+                "d"
+            ],
+            "desc": "checkbox 提示信息"
+        },
+        "array": {
+            "type": "array",
+            "subtype": "input:text",
+            "desc": "提示信息",
+            "value": [
+                "a",
+                "b",
+                "c"
+            ]
+        },
+        "array1": {
+            "type": "array",
+            "subtype": "slider",
+            "min": 0,
+            "max": 10,
+            "desc": "提示信息",
+            "value": [
+                1,
+                2,
+                3
+            ]
+        }
+    }
+}

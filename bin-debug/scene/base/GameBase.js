@@ -352,7 +352,7 @@ var scene;
                 return;
             }
             GameMgr.isEnd = true;
-            this.hideGuide();
+            // this.hideGuide();
             this.removeEvent();
             Mapi.gameEnd();
             if (isShowEnd) {
@@ -380,35 +380,6 @@ var scene;
             // 	return;
             // }
             // this.UiEnd.close();
-        };
-        /** 显示引导 */
-        GameBase.prototype.showGuide = function () {
-            if (GameMgr.isEnd) {
-                return;
-            }
-            if (this.showGuided) {
-                return;
-            }
-            this.showGuided = true;
-            if (!this.guide) {
-                this.guide = new com.ComGuide();
-                this.guide.open();
-            }
-            var time = this.firstTouch ? gConst.firstGuideTimer : gConst.afterGuideTimer;
-            // this.guide.setData(time, { target1: this.item }, this);
-            // this.guide.play();
-        };
-        /** 隐藏引导 */
-        GameBase.prototype.hideGuide = function () {
-            this.firstTouch = false;
-            if (!this.guide) {
-                return;
-            }
-            if (!this.showGuided) {
-                return;
-            }
-            this.showGuided = false;
-            this.guide.over();
         };
         /* =========== 业务代码-end =========== */
         GameBase.prototype._update = function (event) {

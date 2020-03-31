@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.ComLight" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="285" height="285">
+	<e:Group id="con" x="0" y="0" width="285" height="285">
+	</e:Group>
+	<e:Image id="warn" anchorOffsetX="35" anchorOffsetY="77" x="160" y="128" source="p_zhiyin1_png"/>
+</e:Skin>

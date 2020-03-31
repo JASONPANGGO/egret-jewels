@@ -406,7 +406,7 @@ namespace scene {
 				return;
 			}
 			GameMgr.isEnd = true;
-			this.hideGuide();
+			// this.hideGuide();
 
 			this.removeEvent();
 			Mapi.gameEnd();
@@ -443,43 +443,7 @@ namespace scene {
 			// this.UiEnd.close();
 		}
 
-		public guide: com.ComGuide; //引导组件
-		public showGuided: boolean; //引导显示状态
 
-		/** 显示引导 */
-		public showGuide() {
-			if (GameMgr.isEnd) {
-				return;
-			}
-			if (this.showGuided) {
-				return;
-			}
-			this.showGuided = true;
-
-			if (!this.guide) {
-				this.guide = new com.ComGuide();
-				this.guide.open();
-			}
-
-			const time: number = this.firstTouch ? gConst.firstGuideTimer : gConst.afterGuideTimer;
-
-			// this.guide.setData(time, { target1: this.item }, this);
-			// this.guide.play();
-		}
-
-		/** 隐藏引导 */
-		public hideGuide() {
-			this.firstTouch = false;
-
-			if (!this.guide) {
-				return;
-			}
-			if (!this.showGuided) {
-				return;
-			}
-			this.showGuided = false;
-			this.guide.over();
-		}
 		/* =========== 业务代码-end =========== */
 
 		private _update(event?: egret.Event): void {
